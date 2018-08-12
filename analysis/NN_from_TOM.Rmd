@@ -63,7 +63,7 @@ gene1nn20
 ```
 
 #### Make a circle plot of the connectivity among the genes
-```{r circle plot}
+```{r circle plot, fig.height=6, fig.width=6}
 gene1nn20_genes = c(as.character(gene1$geneSym), names(gene1nn20))
 xcolors = genedf$module[match(gene1nn20_genes, genedf$geneSym)]
 xgenes = match(gene1nn20_genes, rownames(TOM))
