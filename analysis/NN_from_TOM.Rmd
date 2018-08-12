@@ -64,19 +64,18 @@ gene1nn20
 
 #### Make a circle plot of the connectivity among the genes
 ```{r circle plot}
-gene1nn20_genes = c(gene1$geneSym, names(gene1nn20))
+gene1nn20_genes = c(as.character(gene1$geneSym), names(gene1nn20))
 xcolors = genedf$module[match(gene1nn20_genes, genedf$geneSym)]
 xgenes = match(gene1nn20_genes, rownames(TOM))
-gene1TOM = TOM[xgenes, xgenes]
+xlabels = gene1nn20_genes
+xlabels[1] = paste0(xlabels[1],"*")
+xTOM = TOM[xgenes, xgenes]
 
-.circlePlot(gene1TOM, 
-           colnames(gene1TOM), 
-           order(-apply(gene1TOM,1,sum)),
-            # lineColors=grey2red(100, linecol.base, linecol.gamma),
-             pointBg=xcolors
-            # max.cex.labels=cex.labels[2], min.cex.labels=cex.labels[1],
-           #  min.cex.points=min.cex.points, max.cex.points=max.cex.points
-  )
+.circlePlot(adjacency=xTOM, 
+           labels=xlabels, 
+           order=order(-apply(xTOM,1,sum)),
+           lineColors=.grey2red(100, .9, 1),
+           pointBg=xcolors)
 ```
 
 ### Most connected gene with potential AR binding site <5kb upstream of TSS

@@ -326,7 +326,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -345,22 +345,81 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/a88eb91ea5f54a956c9670eb5df24f7bf0d1f1d6" target="_blank">a88eb91</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/194b737416f6488b6e9980d1b6987a4647807755" target="_blank">194b737</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
     Ignored:    .DS_Store
+    Ignored:    analysis/figure/
 
-Untracked files:
-    Untracked:  analysis/NN_from_TOM.Rmd
-    Untracked:  code/NN_from_TOM_functions.R
-    Untracked:  data/TOM.net_small.rds
-    Untracked:  data/genedf.rds
+Unstaged changes:
+    Modified:   analysis/NN_from_TOM.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
 </li>
 </ul>
+<details> <summary> <small><strong>Expand here to see past versions:</strong></small> </summary>
+<ul>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+File
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/194b737416f6488b6e9980d1b6987a4647807755/analysis/NN_from_TOM.Rmd" target="_blank">194b737</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+first big commit
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/194b737416f6488b6e9980d1b6987a4647807755/docs/NN_from_TOM.html" target="_blank">194b737</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+first big commit
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+<p></details></p>
 <hr />
 <div id="setup" class="section level2">
 <h2>Setup</h2>
@@ -440,6 +499,36 @@ barplot(mod_avg_dZ.ASC_D,
         ylab=&quot;Mean dZ.ASC_D&quot;,
         las=2)</code></pre>
 <p><img src="figure/NN_from_TOM.Rmd/mod_avg_dZ.ASC_D%20barplot-1.png" width="864" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of mod_avg_dZ.ASC_D barplot-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/194b737416f6488b6e9980d1b6987a4647807755/docs/figure/NN_from_TOM.Rmd/mod_avg_dZ.ASC_D barplot-1.png" target="_blank">194b737</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="get-gene-with-highest-kme-in-royalblue-module-and-its-20-nearest-neighbors" class="section level4">
 <h4>Get gene with highest kME in royalblue module and its 20 nearest neighbors</h4>
@@ -466,20 +555,49 @@ gene1nn20</code></pre>
 </div>
 <div id="make-a-circle-plot-of-the-connectivity-among-the-genes" class="section level4">
 <h4>Make a circle plot of the connectivity among the genes</h4>
-<pre class="r"><code>gene1nn20_genes = c(gene1$geneSym, names(gene1nn20))
+<pre class="r"><code>gene1nn20_genes = c(as.character(gene1$geneSym), names(gene1nn20))
 xcolors = genedf$module[match(gene1nn20_genes, genedf$geneSym)]
 xgenes = match(gene1nn20_genes, rownames(TOM))
-gene1TOM = TOM[xgenes, xgenes]
+xlabels = gene1nn20_genes
+xlabels[1] = paste0(xlabels[1],&quot;*&quot;)
+xTOM = TOM[xgenes, xgenes]
 
-.circlePlot(gene1TOM, 
-           colnames(gene1TOM), 
-           order(-apply(gene1TOM,1,sum)),
-            # lineColors=grey2red(100, linecol.base, linecol.gamma),
-             pointBg=xcolors
-            # max.cex.labels=cex.labels[2], min.cex.labels=cex.labels[1],
-           #  min.cex.points=min.cex.points, max.cex.points=max.cex.points
-  )</code></pre>
+.circlePlot(adjacency=xTOM, 
+           labels=xlabels, 
+           order=order(-apply(xTOM,1,sum)),
+           lineColors=.grey2red(100, .9, 1),
+           pointBg=xcolors)</code></pre>
 <p><img src="figure/NN_from_TOM.Rmd/circle%20plot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of circle plot-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/194b737416f6488b6e9980d1b6987a4647807755/docs/figure/NN_from_TOM.Rmd/circle plot-1.png" target="_blank">194b737</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 </div>
 <div id="most-connected-gene-with-potential-ar-binding-site-5kb-upstream-of-tss" class="section level3">
