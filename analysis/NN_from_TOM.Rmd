@@ -1,0 +1,82 @@
+---
+title: "Find a gene's n nearest neighbors from a topological overlap matrix (TOM)"
+author: "AustinTHilliard"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: workflowr::wflow_html
+---
+
+## Setup
+### Clean workspace, set options, load functions
+```{r start clean}
+rm(list=ls())
+options(stringsAsFactors=FALSE)
+source("code/NN_from_TOM_functions.R")
+```
+
+### Load and prepare data
+```{r load and prepare data}
+# load topological overlap matrix
+TOM = readRDS("data/TOM.net_small.rds")
+
+# load gene information data frame
+genedf = readRDS("data/genedf.rds")
+
+# make sure genes are in same order in both
+genedf = genedf[match(rownames(TOM), genedf$geneSym), ]
+
+# sort genes by module and kME
+new_order = order(genedf$module, -genedf$kME)
+
+genedf = genedf[new_order, ]
+rownames(genedf) = NULL
+
+TOM = TOM[new_order,new_order]
+
+# look at first few genes
+TOM[1:5,1:5]
+genedf[1:5,]
+```
+
+## Find 20 nearest neighbors of some genes 
+### Top gene in module with highest average overexpression in ASC vs D
+#### Get average dZ.ASC_D score for each module 
+```{r find module with highest average dZ.ASC_D}
+mod_avg_dZ.ASC_D = sort(tapply(genedf$dZ.ASC_D, genedf$module, mean))
+```
+
+#### Positive dZ.ASC_D scores reflect higher expression in ASC 
+```{r, mod_avg_dZ.ASC_D barplot, fig.height=4, fig.width=9}
+par(mai=c(1.5,.8,0,0))
+barplot(mod_avg_dZ.ASC_D,
+        col=names(mod_avg_dZ.ASC_D),
+        ylab="Mean dZ.ASC_D",
+        las=2)
+```
+
+#### Get gene with highest kME in royalblue module and its 20 nearest neighbors
+```{r get gene with highest kME in module}
+gene1 = subset(genedf, module=="royalblue")[1,]
+gene1
+
+gene1nn20 = .getNNeighbors(gene=gene1$geneSym, tom=TOM, n=20)
+gene1nn20
+```
+
+#### Make a circle plot of the connectivity among the genes
+```{r circle plot}
+gene1nn20_genes = c(gene1$geneSym, names(gene1nn20))
+xcolors = genedf$module[match(gene1nn20_genes, genedf$geneSym)]
+xgenes = match(gene1nn20_genes, rownames(TOM))
+gene1TOM = TOM[xgenes, xgenes]
+
+.circlePlot(gene1TOM, 
+           colnames(gene1TOM), 
+           order(-apply(gene1TOM,1,sum)),
+            # lineColors=grey2red(100, linecol.base, linecol.gamma),
+             pointBg=xcolors
+            # max.cex.labels=cex.labels[2], min.cex.labels=cex.labels[1],
+           #  min.cex.points=min.cex.points, max.cex.points=max.cex.points
+  )
+```
+
+### Most connected gene with potential AR binding site <5kb upstream of TSS
