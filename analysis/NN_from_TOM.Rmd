@@ -105,7 +105,7 @@ xTOM = TOM[xgenes, xgenes]
 xlabels = gene1nn_genes
 xlabels[1] = paste0(xlabels[1],"*")
 
-par(mai=c(1,1,1,1))
+par(mai=c(.5,.5,.5,.5))
 .circlePlot(adjacency=xTOM, 
            labels=xlabels, 
            order=order(-apply(xTOM,1,sum)),
