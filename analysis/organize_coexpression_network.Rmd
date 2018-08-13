@@ -10,7 +10,7 @@ output: workflowr::wflow_html
 ```{r start clean and source functions}
 rm(list=ls())
 options(stringsAsFactors=FALSE)
-#source("code/.R")
+source("code/organize_coexpression_network_functions.R")
 ```
 <!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
 
