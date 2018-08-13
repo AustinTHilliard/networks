@@ -18,7 +18,7 @@ source("code/NN_from_TOM_functions.R")
 # load topological overlap matrix and gene information data frame
 TOM = readRDS("data/TOM.net_small.rds")
 ```
-_Note:_ All plots and results here were generated with a random subsampling of the full TOM, so yours will look different. 
+_Note:_ All plots and results here were generated with a random subsampling of the full TOM, so yours will look different.  
 [Download full TOM.net.rds here](https://stanford.box.com/v/networks-data-TOM-net-rds)
 ```{r}
 genedf = readRDS("data/genedf.rds")
