@@ -35,8 +35,8 @@ TOM[1:5,1:5]
 genedf[1:5,]
 ```
 
-## Find 20 nearest neighbors of some genes
-### Top gene in module with highest average overexpression in ASC vs D
+## Find nearest neighbors of a gene
+### Use top gene in module with highest average overexpression in ASC vs D
 #### Get average dZ.ASC_D score for each module 
 ```{r find module with highest average dZ.ASC_D}
 mod_avg_dZ.ASC_D = sort(tapply(genedf$dZ.ASC_D, genedf$module, mean))
