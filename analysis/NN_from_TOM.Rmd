@@ -17,6 +17,9 @@ source("code/NN_from_TOM_functions.R")
 ```{r load and prepare data}
 # load topological overlap matrix and gene information data frame
 TOM = readRDS("data/TOM.net_small.rds")
+```
+[Download TOM.net.rds here](https://stanford.box.com/v/networks-data-TOM-net-rds)
+```{r}
 genedf = readRDS("data/genedf.rds")
 
 # make sure genes are in same order in both
