@@ -1,24 +1,28 @@
-.okTOM = function (tom) {
-  if (!is.matrix(tom) | nrow(tom)<2) {
-    stop("tom must be a matrix with more than one row")
+# WGCNA_v1.63::checkAdjMat
+# Checks a given matrix for properties that an adjacency (similarity) matrix must satisfy
+.checkAdjMat = function (adjMat, min=0, max=1) {
+  dim = dim(adjMat)
+  if (is.null(dim) || length(dim) != 2) {
+    stop("adjacency is not two-dimensional")
   }
-  if (!isSymmetric(tom[1:2,1:2])) {
-    stop("tom must be symmetric")
+  if (!is.numeric(adjMat)) {
+    stop("adjacency is not numeric")
   }
-  if (any(tom<0) | any(tom>1) | any(is.infinite(tom))) {
-    stop('tom must contain values between 0 and 1')
+  if (dim[1] != dim[2]) {
+    stop("adjacency is not square")
   }
-  if (any(is.na(tom))) {
-    stop('tom cannot have missing values')
+  if (max(abs(adjMat - t(adjMat)), na.rm = TRUE) > 1e-12) {
+    stop("adjacency is not symmetric")
   }
-  return(TRUE)
+  if (min(adjMat, na.rm = TRUE) < min ||
+      max(adjMat, na.rm = TRUE) > max) {
+    stop("some entries are not between", min, "and", max)
+  }
 }
 
-
-
-.getNNeighbors = 
-function (gene, tom, n) {
-  if (.okTOM(tom)) {
+# Find the nearest neighbors of a given gene in a topological overlap (similarity) matrix
+.getNNeighbors = function (gene, tom, n) {
+  if (is.null(.checkAdjMat(tom))) {
     return(sort(tom[rownames(tom)==gene, ],
                 decreasing=TRUE,
                 na.last=TRUE)
@@ -26,18 +30,52 @@ function (gene, tom, n) {
   }
 }
 
+# WGCNA_v1.63::blueWhiteRed
+# Generate a blue-white-red color sequence of a given length
+.blueWhiteRed = function (n, gamma=1, endSaturation=1) {
+  if (endSaturation>1 | endSaturation<0) {
+    stop("'endSaturation' must be between 0 and 1.")
+  }
+  es = 1 - endSaturation
+  blueEnd = c(0.05 + es * 0.45, 0.55 + es * 0.25, 1)
+  redEnd = c(1, 0.2 + es * 0.6, 0.6 * es)
+  middle = c(1, 1, 1)
+  half = as.integer(n/2)
+  if (n%%2 == 0) {
+    index1 = c(1:half)
+    index2 = c(1:half) + half
+    frac1 = ((index1 - 1)/(half - 1))^(1/gamma)
+    frac2 = rev(frac1)
+  }
+  else {
+    index1 = c(1:(half + 1))
+    index2 = c(1:half) + half + 1
+    frac1 = (c(0:half)/half)^(1/gamma)
+    frac2 = rev((c(1:half)/half)^(1/gamma))
+  }
+  cols = matrix(0, n, 3)
+  for (c in 1:3) {
+    cols[index1, c] = blueEnd[c] + (middle[c] - blueEnd[c]) * 
+      frac1
+    cols[index2, c] = redEnd[c] + (middle[c] - redEnd[c]) * 
+      frac2
+  }
+  rgb(cols[, 1], cols[, 2], cols[, 3], maxColorValue = 1)
+}
 
-.grey2red = 
-function (n, base, gamma) {
+# probably from Peter Langfelder, UCLA, ~2010
+# Generate a grey-red color sequence of a given length
+.grey2red = function (n, base, gamma) {
   red = seq(from=base^gamma, to=1, length.out = n)^(1/gamma)
   green = blue = seq(from = base^gamma, to=0, length.out = n)^(1/gamma);
   col = rgb(red, green, blue, maxColorValue = 1); 
 }
 
-.numbers2colors = function (x, signed = NULL, centered = signed, lim = NULL, commonLim = FALSE, 
-          colors = if (signed) blueWhiteRed(100) else blueWhiteRed(100)[51:100], 
-          naColor = "grey") 
-{
+# WGCNA_v1.63::numbers2colors
+# Creates a color represenation for the given numeric input
+.numbers2colors = function (x, signed=NULL, centered=signed, lim=NULL, commonLim=FALSE, 
+                            colors = if (signed) .blueWhiteRed(100) else .blueWhiteRed(100)[51:100], 
+                            naColor="grey") {
   x = as.matrix(x)
   if (!is.numeric(x)) 
     stop("'x' must be numeric. For a factor, please use as.numeric(x) in the call.")
@@ -103,40 +141,25 @@ function (n, base, gamma) {
   xCol[is.na(xCol)] = naColor
   xCol
 }
-.checkAdjMat = 
-function (adjMat, min = 0, max = 1){
-  dim = dim(adjMat)
-  if (is.null(dim) || length(dim) != 2) 
-    stop("adjacency is not two-dimensional")
-  if (!is.numeric(adjMat)) 
-    stop("adjacency is not numeric")
-  if (dim[1] != dim[2]) 
-    stop("adjacency is not square")
-  if (max(abs(adjMat - t(adjMat)), na.rm = TRUE) > 1e-12) 
-    stop("adjacency is not symmetric")
-  if (min(adjMat, na.rm = TRUE) < min || max(adjMat, na.rm = TRUE) > 
-      max) 
-    stop("some entries are not between", min, "and", max)
-}
 
-
-.circlePlot = 
-function (adjacency, labels, order,
-          startNewPlot=TRUE, plotBox=c(-1,1,-1,1),
-          center=c(0,0), radii=c(0.8, 0.8), startAngle=0,
-          variable.cex.labels=TRUE,
-          min.cex.labels=1, max.cex.labels=1.5,
-          variable.cex.points=TRUE,
-          min.cex.points=1, max.cex.points=3,
-          variable.line.width=TRUE,
-          min.line.width=1, max.line.width=5,
-          lineColors=.grey2red(50,0.6,1),
-          pch=21, pointBg="black",
-          labelColors="black", pointColors="black",
-          xMargin=1-radii[1], yMargin=1-radii[2],
-          xLabelOffset=0.01, yLabelOffset=0.01,
-          variableLabelAngle=TRUE,
-          ...) {
+# probably from Peter Langfelder, UCLA, ~2010
+# Creates a circle plot to visualize connections between interconnected nodes in a network
+.circlePlot = function (adjacency, labels, order,
+                        startNewPlot=TRUE, plotBox=c(-1,1,-1,1),
+                        center=c(0,0), radii=c(0.8, 0.8), startAngle=0,
+                        variable.cex.labels=TRUE,
+                        min.cex.labels=1, max.cex.labels=1.5,
+                        variable.cex.points=TRUE,
+                        min.cex.points=1, max.cex.points=3,
+                        variable.line.width=TRUE,
+                        min.line.width=1, max.line.width=5,
+                        lineColors=.grey2red(50,0.6,1),
+                        pch=21, pointBg="black",
+                        labelColors="black", pointColors="black",
+                        xMargin=1-radii[1], yMargin=1-radii[2],
+                        xLabelOffset=0.01, yLabelOffset=0.01,
+                        variableLabelAngle=TRUE,
+                        ...) {
   
   if (startNewPlot) {
     plot(plotBox[1:2], plotBox[3:4], axes = FALSE, type = "n", xlab = "", ylab = "", ...);

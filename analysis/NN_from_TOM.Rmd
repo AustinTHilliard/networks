@@ -107,12 +107,12 @@ xlabels[1] = paste0(xlabels[1],"*")
 
 par(mai=c(.5,.5,.5,.5))
 .circlePlot(adjacency=xTOM, 
-           labels=xlabels, 
-           order=order(-apply(xTOM,1,sum)),
-           lineColors=.grey2red(100, 1, 1),
-           pointBg=genedf$module[match(gene1nn_genes, genedf$geneSym)],
-           min.cex.points=1, max.cex.points=2,
-           min.cex.labels=.6, max.cex.labels=1.2)
+            labels=xlabels, 
+            order=order(-apply(xTOM,1,sum)),
+            lineColors=.grey2red(100, 1, 1),
+            pointBg=genedf$module[match(gene1nn_genes, genedf$geneSym)],
+            min.cex.points=1, max.cex.points=2,
+            min.cex.labels=.6, max.cex.labels=1.2)
 ```
 <!--
 ### Both copies of androgen receptor
