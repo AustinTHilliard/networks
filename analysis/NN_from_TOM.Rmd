@@ -12,7 +12,7 @@ rm(list=ls())
 options(stringsAsFactors=FALSE)
 source("code/NN_from_TOM_functions.R")
 ```
-#### Some functions in [NN_from_TOM_functions.R](https://github.com/AustinTHilliard/networks/blob/master/code/NN_from_TOM_functions.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I opted to include them here rather than require you to install WGCNA  
+#### Some functions in [NN_from_TOM_functions.R](https://github.com/AustinTHilliard/networks/blob/master/code/NN_from_TOM_functions.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA  
 
 ### Load and prepare data
 ```{r load data}
