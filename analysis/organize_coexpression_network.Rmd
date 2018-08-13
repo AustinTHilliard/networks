@@ -12,9 +12,13 @@ rm(list=ls())
 options(stringsAsFactors=FALSE)
 #source("code/.R")
 ```
-#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA  
+<!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
 
 ### Load and prepare data
+#### Load expression data and output from WGCNA::blockwiseModules
 ```{r load data}
-#
+# males_6ASC_7D_6ND_0var_medtpm.5_.33zeros_log2_preProc-dev2.5-IAC2_batch-lib-tank-seqdate_replace-negs/
+load("data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData")
+load("data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData")
+ls()
 ```

@@ -326,7 +326,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -345,7 +345,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/e31e9351d2efd0fa2e36f9ef72c77adc157c0347" target="_blank">e31e935</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/08624c941d180b3b7b287f25c5785b9a16fe8d08" target="_blank">08624c9</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -355,12 +355,77 @@ Ignored files:
     Ignored:    docs/figure/.DS_Store
 
 Untracked files:
-    Untracked:  analysis/organize_coexpression_network.Rmd
+    Untracked:  data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData
+    Untracked:  data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData
+
+Unstaged changes:
+    Modified:   analysis/organize_coexpression_network.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
 </li>
 </ul>
+<details> <summary> <small><strong>Expand here to see past versions:</strong></small> </summary>
+<ul>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+File
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/08624c941d180b3b7b287f25c5785b9a16fe8d08/analysis/organize_coexpression_network.Rmd" target="_blank">08624c9</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+initialize organize_coexpression_network.Rmd
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/08624c941d180b3b7b287f25c5785b9a16fe8d08/docs/organize_coexpression_network.html" target="_blank">08624c9</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+initialize organize_coexpression_network.Rmd
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+<p></details></p>
 <hr />
 <div id="setup" class="section level2">
 <h2>Setup</h2>
@@ -369,13 +434,18 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <pre class="r"><code>rm(list=ls())
 options(stringsAsFactors=FALSE)
 #source(&quot;code/.R&quot;)</code></pre>
-<div id="some-functions-in-.r-are-from-the-wgnca-library-version-1.63.-i-included-them-here-rather-than-require-you-to-install-wgcna" class="section level4">
-<h4>Some functions in <a href="https://github.com/AustinTHilliard/networks/blob/master/code/.R">.R</a> are from the <a href="https://cran.r-project.org/web/packages/WGCNA/index.html">WGNCA library (version 1.63)</a>. I included them here rather than require you to install WGCNA</h4>
-</div>
+<!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
 </div>
 <div id="load-and-prepare-data" class="section level3">
 <h3>Load and prepare data</h3>
-<pre class="r"><code>#</code></pre>
+<div id="load-expression-data-and-output-from-wgcnablockwisemodules" class="section level4">
+<h4>Load expression data and output from WGCNA::blockwiseModules</h4>
+<pre class="r"><code># males_6ASC_7D_6ND_0var_medtpm.5_.33zeros_log2_preProc-dev2.5-IAC2_batch-lib-tank-seqdate_replace-negs/
+load(&quot;data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData&quot;)
+load(&quot;data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData&quot;)
+ls()</code></pre>
+<pre><code>[1] &quot;DATA&quot; &quot;net&quot; </code></pre>
+</div>
 </div>
 </div>
 <div id="session-information" class="section level2">
