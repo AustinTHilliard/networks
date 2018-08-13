@@ -21,4 +21,7 @@ options(stringsAsFactors=FALSE)
 load("data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData")
 load("data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData")
 ls()
+dim(DATA)
+DATA[1:5, 1:5]
+sapply(net,length)
 ```

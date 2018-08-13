@@ -317,17 +317,16 @@ div.section {
 
 <h1 class="title toc-ignore">Organize important data from a gene coexpression network</h1>
 <h4 class="author"><em>AustinTHilliard</em></h4>
-<h4 class="date"><em>12 August, 2018</em></h4>
+<h4 class="date"><em>13 August, 2018</em></h4>
 
 </div>
 
 
-<p><strong>Last updated:</strong> 2018-08-12</p>
+<p><strong>Last updated:</strong> 2018-08-13</p>
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -346,7 +345,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/2edcb87495bb71baf9dc0868d0e502e7c39d82bf" target="_blank">2edcb87</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/462f661ed77488ea38e213532cfe3c3793123084" target="_blank">462f661</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -358,6 +357,9 @@ Ignored files:
 Untracked files:
     Untracked:  data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData
     Untracked:  data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData
+
+Unstaged changes:
+    Modified:   analysis/organize_coexpression_network.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -386,6 +388,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/462f661ed77488ea38e213532cfe3c3793123084/docs/organize_coexpression_network.html" target="_blank">462f661</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -477,6 +496,20 @@ load(&quot;data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DAT
 load(&quot;data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData&quot;)
 ls()</code></pre>
 <pre><code>[1] &quot;DATA&quot; &quot;net&quot; </code></pre>
+<pre class="r"><code>dim(DATA)</code></pre>
+<pre><code>[1]    19 12368</code></pre>
+<pre class="r"><code>DATA[1:5, 1:5]</code></pre>
+<pre><code>                                 aacs   aadacl4    aadat    aagab     aak1
+ASC_B7_lib3-CCGTCC-Dec2015-1 5.382705 0.8954804 3.001318 4.488522 5.438539
+D_B5_lib4-CGATGT-Dec2015-1   5.241799 1.0347914 2.922862 4.489043 5.357542
+D_B5_lib3-ACAGTG-Dec2015-2   5.542794 0.4733001 3.173743 4.553734 5.100207
+ND_B6_lib4-CTTGTA-Dec2015-2  5.339031 0.5076581 2.773538 4.435222 5.296041
+ASC_B6_lib4-ACAGTG-Dec2015-3 5.463025 0.9040657 2.929339 4.497199 5.547951</code></pre>
+<pre class="r"><code>sapply(net,length)</code></pre>
+<pre><code>        colors unmergedColors            MEs    goodSamples      goodGenes 
+         12368          12368             39             19          12368 
+   dendrograms       TOMFiles     blockGenes         blocks          MEsOK 
+             1              0              1          12368              1 </code></pre>
 </div>
 </div>
 </div>
