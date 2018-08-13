@@ -10,6 +10,9 @@ output: workflowr::wflow_html
 ```{r start clean}
 rm(list=ls())
 options(stringsAsFactors=FALSE)
+
+# Some functions in this file are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html)
+# I opted to include them here rather than require you to install WGCNA
 source("code/NN_from_TOM_functions.R")
 ```
 #### [Download NN_from_TOM_functions.R here ](https://github.com/AustinTHilliard/networks/blob/master/code/NN_from_TOM_functions.R)
