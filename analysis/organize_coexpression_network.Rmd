@@ -1,0 +1,20 @@
+---
+title: "Organize important data from a gene coexpression network"
+author: "AustinTHilliard"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: workflowr::wflow_html
+---
+  
+## Setup
+### Clean workspace, set options, load functions
+```{r start clean and source functions}
+rm(list=ls())
+options(stringsAsFactors=FALSE)
+#source("code/.R")
+```
+#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA  
+
+### Load and prepare data
+```{r load data}
+#
+```
