@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/e8feebf69786d9f7de40c3f90b092416accc1d15" target="_blank">e8feebf</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/1b6308b257270627c886b6d50f64534a10218675" target="_blank">1b6308b</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -381,6 +381,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/1b6308b257270627c886b6d50f64534a10218675/analysis/NN_from_TOM.Rmd" target="_blank">1b6308b</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/b2f5ada64f7eea0dd5370b546d645f5521dd6a46/docs/NN_from_TOM.html" target="_blank">b2f5ada</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -1347,7 +1381,7 @@ xTOM = TOM[xgenes, xgenes]
 xlabels = gene1nn_genes
 xlabels[1] = paste0(xlabels[1],&quot;*&quot;)
 
-par(mai=c(1,1,1,1))
+par(mai=c(.5,.5,.5,.5))
 .circlePlot(adjacency=xTOM, 
            labels=xlabels, 
            order=order(-apply(xTOM,1,sum)),
