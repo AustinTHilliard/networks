@@ -12,9 +12,10 @@ rm(list=ls())
 options(stringsAsFactors=FALSE)
 source("code/NN_from_TOM_functions.R")
 ```
+#### [Download NN_from_TOM_functions.R here ](https://github.com/AustinTHilliard/networks/blob/master/code/NN_from_TOM_functions.R)
 
 ### Load and prepare data
-```{r load and prepare data}
+```{r load data}
 # load topological overlap matrix and gene information data frame
 TOM = readRDS("data/TOM.net_small.rds")
 genedf = readRDS("data/genedf.rds")
@@ -23,7 +24,7 @@ _Note:_ All plots and results here were generated with a random subsampling of t
 #### [Download full TOM.net.rds here](https://stanford.box.com/v/networks-data-TOM-net-rds)  
 #### [Download genedf.rds here](https://stanford.box.com/v/networks-data-genedf-rds)  
 
-```{r}
+```{r prepare data}
 # make sure genes are in same order in both
 genedf = genedf[match(rownames(TOM), genedf$geneSym), ]
 
@@ -48,7 +49,7 @@ mod_avg_dZ.ASC_D = sort(tapply(genedf$dZ.ASC_D, genedf$module, mean))
 ```
 
 #### Positive dZ.ASC_D scores reflect higher expression in ASC 
-```{r, mod_avg_dZ.ASC_D barplot, fig.height=4, fig.width=9}
+```{r mod_avg_dZ.ASC_D barplot, fig.height=4, fig.width=9}
 par(mai=c(1.5,.8,0,0))
 barplot(mod_avg_dZ.ASC_D,
         col=names(mod_avg_dZ.ASC_D),
@@ -68,6 +69,7 @@ gene1nn
 gene1nn_df = as.data.frame(cbind(genedf[match(names(gene1nn), genedf$geneSym), ],
                                  TO=gene1nn))
 ```
+
 <!--
 ```{r TO vs dZ scatterplots, warning=FALSE, fig.height=3.33, fig.width=9}
 par(mfrow=c(1,3))
@@ -92,27 +94,23 @@ for (dZ in c("dZ.ASC_D","dZ.ASC_ND","dZ.D_ND")) {
 
 #### Make a circle plot of the connectivity among the genes
 ```{r circle plot, fig.height=6, fig.width=6}
-# 
+# add gene of interest to vector with its nearest neighbors
 gene1nn_genes = c(as.character(gene1$geneSym), names(gene1nn))
 
-#
+# find positions of genes in the TOM
 xgenes = match(gene1nn_genes, rownames(TOM))
 xTOM = TOM[xgenes, xgenes]
 
-#
+# append gene of interest's name with "*"
 xlabels = gene1nn_genes
 xlabels[1] = paste0(xlabels[1],"*")
 
-#
-xcolors = genedf$module[match(gene1nn_genes, genedf$geneSym)]
-
-#
 par(mai=c(1,1,1,1))
 .circlePlot(adjacency=xTOM, 
            labels=xlabels, 
            order=order(-apply(xTOM,1,sum)),
            lineColors=.grey2red(100, 1, 1),
-           pointBg=xcolors,
+           pointBg=genedf$module[match(gene1nn_genes, genedf$geneSym)],
            min.cex.points=1, max.cex.points=2,
            min.cex.labels=.6, max.cex.labels=1.2)
 ```
