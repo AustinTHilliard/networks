@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/bf2d4c906834160d009f510f545073dee8b973bb" target="_blank">bf2d4c9</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/8da8f85fd56cdf93085a2f554c0de8ae3e51b661" target="_blank">8da8f85</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -381,6 +381,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/8da8f85fd56cdf93085a2f554c0de8ae3e51b661/analysis/NN_from_TOM.Rmd" target="_blank">8da8f85</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/8e7b05161da47add33850608b1148a0e89705461/docs/NN_from_TOM.html" target="_blank">8e7b051</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -1014,9 +1048,12 @@ source(&quot;code/NN_from_TOM_functions.R&quot;)</code></pre>
 <pre class="r"><code># load topological overlap matrix and gene information data frame
 TOM = readRDS(&quot;data/TOM.net_small.rds&quot;)
 genedf = readRDS(&quot;data/genedf.rds&quot;)</code></pre>
-<p><em>Note:</em> All plots and results here were generated with a random subsampling of the full TOM, so yours will look different.<br />
-#### <a href="https://stanford.box.com/v/networks-data-TOM-net-rds">Download full TOM.net.rds here</a><br />
-#### <a href="https://stanford.box.com/v/networks-data-genedf-rds">Download genedf.rds here</a></p>
+<p><em>Note:</em> All plots and results here were generated with a random subsampling of the full TOM, so yours will look different.</p>
+<div id="download-full-tom.net.rds-here" class="section level4">
+<h4><a href="https://stanford.box.com/v/networks-data-TOM-net-rds">Download full TOM.net.rds here</a></h4>
+</div>
+<div id="download-genedf.rds-here" class="section level4">
+<h4><a href="https://stanford.box.com/v/networks-data-genedf-rds">Download genedf.rds here</a></h4>
 <pre class="r"><code># make sure genes are in same order in both
 genedf = genedf[match(rownames(TOM), genedf$geneSym), ]
 
@@ -1061,6 +1098,7 @@ acsbg1 0.07471989 0.06407387 0.05981528 0.06203571 1.00000000</code></pre>
 3                                                   caseinolytic mitochondrial matrix peptidase chaperone subunit
 4 hydroxyacyl-CoA dehydrogenase/3-ketoacyl-CoA thiolase/enoyl-CoA hydratase (trifunctional protein) alpha subunit
 5                                                                   acyl-CoA synthetase bubblegum family member 1</code></pre>
+</div>
 </div>
 </div>
 <div id="find-nearest-neighbors-of-a-gene" class="section level2">
