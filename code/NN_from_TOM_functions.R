@@ -259,3 +259,4 @@ function (adjacency, labels, order,
   }
   
 }
+

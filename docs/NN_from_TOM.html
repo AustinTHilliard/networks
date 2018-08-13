@@ -12,7 +12,7 @@
 <meta name="author" content="AustinTHilliard" />
 
 
-<title>Find a gene's n nearest neighbors from a topological overlap matrix (TOM)</title>
+<title>Find a gene's n nearest neighbors from a topological overlap matrix</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -315,7 +315,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Find a gene’s n nearest neighbors from a topological overlap matrix (TOM)</h1>
+<h1 class="title toc-ignore">Find a gene’s n nearest neighbors from a topological overlap matrix</h1>
 <h4 class="author"><em>AustinTHilliard</em></h4>
 <h4 class="date"><em>12 August, 2018</em></h4>
 
@@ -326,8 +326,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -346,13 +345,18 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/7b6b0d544646c6afe401fbd4d4b078b51d822267" target="_blank">7b6b0d5</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/6bbb5fb6f9622dd513b6b86ac8c691bc6cfbfd15" target="_blank">6bbb5fb</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
     Ignored:    .DS_Store
     Ignored:    docs/.DS_Store
     Ignored:    docs/figure/.DS_Store
+
+Unstaged changes:
+    Modified:   analysis/NN_from_TOM.Rmd
+    Modified:   code/NN_from_TOM_functions.R
+    Modified:   data/TOM.net_small.rds
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -381,6 +385,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/6bbb5fb6f9622dd513b6b86ac8c691bc6cfbfd15/docs/NN_from_TOM.html" target="_blank">6bbb5fb</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-12
+</td>
+<td style="text-align:left;">
+NN_from_TOM
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 html
@@ -515,10 +536,9 @@ source(&quot;code/NN_from_TOM_functions.R&quot;)</code></pre>
 </div>
 <div id="load-and-prepare-data" class="section level3">
 <h3>Load and prepare data</h3>
-<pre class="r"><code># load topological overlap matrix
+<pre class="r"><code># load topological overlap matrix and gene information data frame
+#TOM = readRDS(&quot;~/Documents/_Stanford_work/_ascentWGCNA_paper/TOM.net.rds&quot;)
 TOM = readRDS(&quot;data/TOM.net_small.rds&quot;)
-
-# load gene information data frame
 genedf = readRDS(&quot;data/genedf.rds&quot;)
 
 # make sure genes are in same order in both
@@ -527,44 +547,44 @@ genedf = genedf[match(rownames(TOM), genedf$geneSym), ]
 # sort genes by module and kME
 new_order = order(genedf$module, -genedf$kME)
 
+# reorder TOM and genedf
 genedf = genedf[new_order, ]
 rownames(genedf) = NULL
-
 TOM = TOM[new_order,new_order]
 
-# look at first few genes
+# look at the first few genes
 TOM[1:5,1:5]</code></pre>
-<pre><code>            ddx56      atp5j       clpx     acsbg1      atox1
-ddx56  1.00000000 0.06606012 0.07012866 0.07471989 0.06283564
-atp5j  0.06606012 1.00000000 0.08833673 0.06407387 0.06871115
-clpx   0.07012866 0.08833673 1.00000000 0.05981528 0.07510159
-acsbg1 0.07471989 0.06407387 0.05981528 1.00000000 0.03866963
-atox1  0.06283564 0.06871115 0.07510159 0.03866963 1.00000000</code></pre>
+<pre><code>            ddx56      atp5j       clpx      hadha     acsbg1
+ddx56  1.00000000 0.06606012 0.07012866 0.06941636 0.07471989
+atp5j  0.06606012 1.00000000 0.08833673 0.09704876 0.06407387
+clpx   0.07012866 0.08833673 1.00000000 0.09482702 0.05981528
+hadha  0.06941636 0.09704876 0.09482702 1.00000000 0.06203571
+acsbg1 0.07471989 0.06407387 0.05981528 0.06203571 1.00000000</code></pre>
 <pre class="r"><code>genedf[1:5,]</code></pre>
 <pre><code>     geneID geneSym                    location strand width
 1 102304553   ddx56  scaffold_572:262650-279196      - 16547
 2 102295542   atp5j scaffold_33:1972847-1974894      +  2048
 3 102310734    clpx  scaffold_458:154334-164447      + 10114
-4 102289406  acsbg1 scaffold_98:1203943-1208792      +  4850
-5 102289763   atox1    scaffold_391:86139-89992      -  3854
+4 102297790   hadha   scaffold_75:146313-155777      -  9465
+5 102289406  acsbg1 scaffold_98:1203943-1208792      +  4850
          biotype       GC isoforms brOVzOV.tfbs module       kME
 1 protein_coding 0.294011        1         &lt;NA&gt;  black 0.9285567
 2 protein_coding 0.430664        1         &lt;NA&gt;  black 0.9148463
 3 protein_coding 0.389164        2         &lt;NA&gt;  black 0.9063254
-4 protein_coding 0.402062        1         &lt;NA&gt;  black 0.8869624
-5 protein_coding 0.415153        1         &lt;NA&gt;  black 0.8855253
+4 protein_coding 0.327734        1         &lt;NA&gt;  black 0.9029814
+5 protein_coding 0.402062        1         &lt;NA&gt;  black 0.8869624
          p.kME kMEquantile  dZ.ASC_D   dZ.ASC_ND  dZ.D_ND
 1 9.819420e-09  0.01345291 -3.422276 -1.02597835 2.357568
 2 4.163860e-08  0.01569507 -2.555299 -0.05129892 2.502064
 3 9.092011e-08  0.02017937 -2.593325  0.15389675 2.753031
-4 4.195639e-07  0.03811659 -2.692190 -0.87208160 1.787189
-5 4.647672e-07  0.04260090 -2.395593 -0.71818485 1.650297
-                                                              desc
-1                           DEAD (Asp-Glu-Ala-Asp) box helicase 56
-2 ATP synthase H+ transporting mitochondrial Fo complex subunit F6
-3    caseinolytic mitochondrial matrix peptidase chaperone subunit
-4                    acyl-CoA synthetase bubblegum family member 1
-5                                   antioxidant 1 copper chaperone</code></pre>
+4 1.210797e-07  0.02242152 -2.813871 -0.41039134 2.387988
+5 4.195639e-07  0.03811659 -2.692190 -0.87208160 1.787189
+                                                                                                             desc
+1                                                                          DEAD (Asp-Glu-Ala-Asp) box helicase 56
+2                                                ATP synthase H+ transporting mitochondrial Fo complex subunit F6
+3                                                   caseinolytic mitochondrial matrix peptidase chaperone subunit
+4 hydroxyacyl-CoA dehydrogenase/3-ketoacyl-CoA thiolase/enoyl-CoA hydratase (trifunctional protein) alpha subunit
+5                                                                   acyl-CoA synthetase bubblegum family member 1</code></pre>
 </div>
 </div>
 <div id="find-20-nearest-neighbors-of-some-genes" class="section level2">
@@ -614,43 +634,125 @@ AustinTHilliard
 </table>
 <p></details></p>
 </div>
-<div id="get-gene-with-highest-kme-in-royalblue-module-and-its-20-nearest-neighbors" class="section level4">
-<h4>Get gene with highest kME in royalblue module and its 20 nearest neighbors</h4>
+<div id="get-gene-with-highest-kme-in-royalblue-module-and-its-25-nearest-neighbors" class="section level4">
+<h4>Get gene with highest kME in royalblue module and its 25 nearest neighbors</h4>
 <pre class="r"><code>gene1 = subset(genedf, module==&quot;royalblue&quot;)[1,]
 gene1</code></pre>
 <pre><code>        geneID geneSym                     location strand width
-1333 102291343 caprin1 scaffold_102:1344431-1355119      + 10689
+1985 102291343 caprin1 scaffold_102:1344431-1355119      + 10689
             biotype       GC isoforms brOVzOV.tfbs    module       kME
-1333 protein_coding 0.371878        3         &lt;NA&gt; royalblue 0.9028506
+1985 protein_coding 0.371878        3         &lt;NA&gt; royalblue 0.9028506
             p.kME kMEquantile dZ.ASC_D dZ.ASC_ND   dZ.D_ND
-1333 1.224175e-07  0.02912621 3.429881  1.179875 -2.205467
+1985 1.224175e-07  0.02912621 3.429881  1.179875 -2.205467
                                 desc
-1333 cell cycle associated protein 1</code></pre>
-<pre class="r"><code>gene1nn20 = .getNNeighbors(gene=gene1$geneSym, tom=TOM, n=20)
-gene1nn20</code></pre>
-<pre><code>     ddx31       clnk      ddx27       ano3      gfod2      adam9 
-0.06442015 0.05359645 0.05228510 0.05082184 0.04971810 0.04868142 
-   fam110b     dnajc6       bpgm       dcxr       btg1       dnm1 
-0.04523955 0.04238226 0.04166730 0.03821889 0.03786318 0.03750613 
-   elmsan1     fbxo33      ero1a      gchfr   arhgap12      ash1l 
-0.03684291 0.03665379 0.03483489 0.03456345 0.03429557 0.03307771 
-     clip3     fbxl16 
-0.03156361 0.03127642 </code></pre>
+1985 cell cycle associated protein 1</code></pre>
+<pre class="r"><code>gene1nn = .getNNeighbors(gene=gene1$geneSym, tom=TOM, n=25)
+gene1nn</code></pre>
+<pre><code>     ddx31      kat6b       clnk      ddx27       ano3      gfod2 
+0.06442015 0.05789112 0.05359645 0.05228510 0.05082184 0.04971810 
+     adam9    fam110b      kdm3b     dnajc6       bpgm       dcxr 
+0.04868142 0.04523955 0.04390852 0.04238226 0.04166730 0.03821889 
+      btg1       dnm1     kcnj15    elmsan1     fbxo33      ikzf1 
+0.03786318 0.03750613 0.03743466 0.03684291 0.03665379 0.03619576 
+    ikbkap      ero1a      gchfr   arhgap12      gpr75      ash1l 
+0.03529574 0.03483489 0.03456345 0.03429557 0.03358165 0.03307771 
+     gpr52 
+0.03304104 </code></pre>
+<pre class="r"><code># make data frame with just these genes and add column with TO
+gene1nn_df = as.data.frame(cbind(genedf[match(names(gene1nn), genedf$geneSym), ],
+                                 TO=gene1nn))
+gene1nn_df[, c(&quot;geneSym&quot;,&quot;desc&quot;)]</code></pre>
+<pre><code>      geneSym
+2005    ddx31
+186     kat6b
+1989     clnk
+266     ddx27
+1988     ano3
+1986    gfod2
+1997    adam9
+173   fam110b
+244     kdm3b
+1990   dnajc6
+1987     bpgm
+2013     dcxr
+457      btg1
+1992     dnm1
+1995   kcnj15
+185   elmsan1
+2000   fbxo33
+2008    ikzf1
+2003   ikbkap
+2682    ero1a
+2654    gchfr
+2194 arhgap12
+2136    gpr75
+178     ash1l
+2012    gpr52
+                                                                                                desc
+2005                                                       DEAD (Asp-Glu-Ala-Asp) box polypeptide 31
+186                                                                   K(lysine) acetyltransferase 6B
+1989                                                    cytokine-dependent hematopoietic cell linker
+266                                                        DEAD (Asp-Glu-Ala-Asp) box polypeptide 27
+1988                                                                                     anoctamin 3
+1986                                             glucose-fructose oxidoreductase domain containing 2
+1997                                                                  ADAM metallopeptidase domain 9
+173                                                     family with sequence similarity 110 member B
+244                                                               lysine (K)-specific demethylase 3B
+1990                                                       DnaJ (Hsp40) homolog subfamily C member 6
+1987                                                                   23-bisphosphoglycerate mutase
+2013                                                                 dicarbonyl/L-xylulose reductase
+457                                                   B-cell translocation gene 1 anti-proliferative
+1992                                                                                     dynamin 1 5
+1995                                     potassium channel inwardly rectifying subfamily J member 15
+185                                                       ELM2 and Myb/SANT-like domain containing 1
+2000                                                                                F-box protein 33
+2008                                                            IKAROS family zinc finger 1 (Ikaros)
+2003 inhibitor of kappa light polypeptide gene enhancer in B-cells kinase complex-associated protein
+2682                                                      endoplasmic reticulum oxidoreductase alpha
+2654                                                         GTP cyclohydrolase I feedback regulator
+2194                                                                Rho GTPase activating protein 12
+2136                                                                   G protein-coupled receptor 75
+178                                                ash1 (absent small or homeotic)-like (Drosophila)
+2012                                                                   G protein-coupled receptor 52</code></pre>
+<pre class="r"><code>par(mfrow=c(1,3))
+for (dZ in c(&quot;dZ.ASC_D&quot;,&quot;dZ.ASC_ND&quot;,&quot;dZ.D_ND&quot;)) {
+  #
+  y1 = gene1nn_df[, dZ]
+  xcor = cor.test(gene1nn, y1, method=&quot;s&quot;)
+  
+  #
+  plot(gene1nn, y1, 
+       xlab=paste0(&quot;TO with &quot;,gene1$geneSym), 
+       ylab=dZ, 
+       col=gene1nn_df$module, 
+       pch=20, cex=2,
+       main=paste0(&quot;rho=&quot;,signif(xcor$estimate,2),&quot;, p=&quot;,signif(xcor$p.value,2)))
+  
+  #
+  abline(lm(y1 ~ gene1nn), lty=&quot;dashed&quot;, col=&quot;red&quot;)
+}</code></pre>
+<p><img src="figure/NN_from_TOM.Rmd/TO%20vs%20dZ%20scatterplots-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="make-a-circle-plot-of-the-connectivity-among-the-genes" class="section level4">
 <h4>Make a circle plot of the connectivity among the genes</h4>
-<pre class="r"><code>gene1nn20_genes = c(as.character(gene1$geneSym), names(gene1nn20))
-xcolors = genedf$module[match(gene1nn20_genes, genedf$geneSym)]
-xgenes = match(gene1nn20_genes, rownames(TOM))
-xlabels = gene1nn20_genes
-xlabels[1] = paste0(xlabels[1],&quot;*&quot;)
+<pre class="r"><code>gene1nn_genes = c(as.character(gene1$geneSym), names(gene1nn))
+
+xgenes = match(gene1nn_genes, rownames(TOM))
 xTOM = TOM[xgenes, xgenes]
 
+xlabels = gene1nn_genes
+xlabels[1] = paste0(xlabels[1],&quot;*&quot;)
+
+xcolors = genedf$module[match(gene1nn_genes, genedf$geneSym)]
+
+par(mai=c(1,1,1,1))
 .circlePlot(adjacency=xTOM, 
            labels=xlabels, 
            order=order(-apply(xTOM,1,sum)),
-           lineColors=.grey2red(100, .9, 1),
-           pointBg=xcolors)</code></pre>
+           lineColors=.grey2red(100, 1, 1),
+           pointBg=xcolors,
+           min.cex.points=1, max.cex.points=2,
+           min.cex.labels=.6, max.cex.labels=1.2)</code></pre>
 <p><img src="figure/NN_from_TOM.Rmd/circle%20plot-1.png" width="576" style="display: block; margin: auto;" /></p>
 <details> <summary><em>Expand here to see past versions of circle plot-1.png:</em></summary>
 <table style="border-collapse:separate; border-spacing:5px;">
@@ -706,8 +808,48 @@ AustinTHilliard
 <p></details></p>
 </div>
 </div>
-<div id="most-connected-gene-with-potential-ar-binding-site-5kb-upstream-of-tss" class="section level3">
-<h3>Most connected gene with potential AR binding site &lt;5kb upstream of TSS</h3>
+<div id="both-copies-of-androgen-receptor" class="section level3">
+<h3>Both copies of androgen receptor</h3>
+<div id="find-ids-for-both-genes-and-get-their-20-nearest-neighbors" class="section level4">
+<h4>Find ids for both genes and get their 20 nearest neighbors</h4>
+<pre class="r"><code>ARdf = subset(genedf, grepl(&#39;androgen receptor&#39;, desc, ignore.case=T))
+ARdf</code></pre>
+<pre><code>        geneID      geneSym                    location strand width
+2211 102296288 LOC102296288   scaffold_96:930493-957139      - 26647
+2362 102308855           ar scaffold_14:2324407-2334706      - 10300
+            biotype       GC isoforms brOVzOV.tfbs  module       kME
+2211 protein_coding 0.382182        1         &lt;NA&gt; skyblue 0.6477241
+2362 protein_coding 0.419903        2         &lt;NA&gt;     tan 0.6221098
+           p.kME kMEquantile  dZ.ASC_D dZ.ASC_ND   dZ.D_ND
+2211 0.002712426   0.7073171  1.992525 -0.615587 -2.631350
+2362 0.004453170   0.7612903 -0.403068  2.564946  3.064838
+                       desc
+2211 androgen receptor-like
+2362      androgen receptor</code></pre>
+<pre class="r"><code>arNN = lapply(as.list(ARdf$geneSym), 
+              function(g) .getNNeighbors(gene=g, tom=TOM, n=20))
+names(arNN) = ARdf$geneSym
+arNN</code></pre>
+<pre><code>$LOC102296288
+    arhgap12        cdipt       kctd16 LOC102289473        homez 
+  0.05320000   0.04042541   0.03467713   0.03411237   0.02964342 
+     fam110b        crlf3       acvr2a         ebpl        bicc1 
+  0.02959470   0.02744321   0.02677391   0.02668424   0.02647447 
+     fam193b      col14a1        kat6b      caprin1     fam171a1 
+  0.02567828   0.02496474   0.02463472   0.02326523   0.02270872 
+        ano3        ash1l         gpc5         fmn2        cdk19 
+  0.02148759   0.02146622   0.02115887   0.02109430   0.02105303 
+
+$ar
+        iapp         cars        endog         gamt        kndc1 
+  0.05154342   0.04979539   0.04757564   0.04730264   0.04687810 
+      ipcef1        anxa6         dqx1        alas1        cers5 
+  0.04652601   0.04540900   0.04481526   0.04426186   0.04255968 
+LOC102288586     arhgap32 LOC102289329         coq9         hmbs 
+  0.04137076   0.03963432   0.03887085   0.03886865   0.03867963 
+        cap1      dnajc15       il15ra         htr7       ccdc64 
+  0.03816311   0.03769013   0.03674778   0.03591135   0.03547465 </code></pre>
+</div>
 </div>
 </div>
 <div id="session-information" class="section level2">

@@ -1,5 +1,5 @@
 ---
-title: "Find a gene's n nearest neighbors from a topological overlap matrix (TOM)"
+title: "Find a gene's n nearest neighbors from a topological overlap matrix"
 author: "AustinTHilliard"
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output: workflowr::wflow_html
@@ -15,10 +15,9 @@ source("code/NN_from_TOM_functions.R")
 
 ### Load and prepare data
 ```{r load and prepare data}
-# load topological overlap matrix
+# load topological overlap matrix and gene information data frame
+#TOM = readRDS("~/Documents/_Stanford_work/_ascentWGCNA_paper/TOM.net.rds")
 TOM = readRDS("data/TOM.net_small.rds")
-
-# load gene information data frame
 genedf = readRDS("data/genedf.rds")
 
 # make sure genes are in same order in both
@@ -27,12 +26,12 @@ genedf = genedf[match(rownames(TOM), genedf$geneSym), ]
 # sort genes by module and kME
 new_order = order(genedf$module, -genedf$kME)
 
+# reorder TOM and genedf
 genedf = genedf[new_order, ]
 rownames(genedf) = NULL
-
 TOM = TOM[new_order,new_order]
 
-# look at first few genes
+# look at the first few genes
 TOM[1:5,1:5]
 genedf[1:5,]
 ```
@@ -53,29 +52,71 @@ barplot(mod_avg_dZ.ASC_D,
         las=2)
 ```
 
-#### Get gene with highest kME in royalblue module and its 20 nearest neighbors
+#### Get gene with highest kME in royalblue module and its 25 nearest neighbors
 ```{r get gene with highest kME in module}
 gene1 = subset(genedf, module=="royalblue")[1,]
 gene1
 
-gene1nn20 = .getNNeighbors(gene=gene1$geneSym, tom=TOM, n=20)
-gene1nn20
+gene1nn = .getNNeighbors(gene=gene1$geneSym, tom=TOM, n=25)
+gene1nn
+
+# make data frame with just these genes and add column with TO
+gene1nn_df = as.data.frame(cbind(genedf[match(names(gene1nn), genedf$geneSym), ],
+                                 TO=gene1nn))
+gene1nn_df[, c("geneSym","desc")]
 ```
+
+```{r TO vs dZ scatterplots, warning=FALSE, fig.height=3.33, fig.width=9}
+par(mfrow=c(1,3))
+for (dZ in c("dZ.ASC_D","dZ.ASC_ND","dZ.D_ND")) {
+  #
+  y1 = gene1nn_df[, dZ]
+  xcor = cor.test(gene1nn, y1, method="s")
+  
+  #
+  plot(gene1nn, y1, 
+       xlab=paste0("TO with ",gene1$geneSym), 
+       ylab=dZ, 
+       col=gene1nn_df$module, 
+       pch=20, cex=2,
+       main=paste0("rho=",signif(xcor$estimate,2),", p=",signif(xcor$p.value,2)))
+  
+  #
+  abline(lm(y1 ~ gene1nn), lty="dashed", col="red")
+}
+```
+
 
 #### Make a circle plot of the connectivity among the genes
 ```{r circle plot, fig.height=6, fig.width=6}
-gene1nn20_genes = c(as.character(gene1$geneSym), names(gene1nn20))
-xcolors = genedf$module[match(gene1nn20_genes, genedf$geneSym)]
-xgenes = match(gene1nn20_genes, rownames(TOM))
-xlabels = gene1nn20_genes
-xlabels[1] = paste0(xlabels[1],"*")
+gene1nn_genes = c(as.character(gene1$geneSym), names(gene1nn))
+
+xgenes = match(gene1nn_genes, rownames(TOM))
 xTOM = TOM[xgenes, xgenes]
 
+xlabels = gene1nn_genes
+xlabels[1] = paste0(xlabels[1],"*")
+
+xcolors = genedf$module[match(gene1nn_genes, genedf$geneSym)]
+
+par(mai=c(1,1,1,1))
 .circlePlot(adjacency=xTOM, 
            labels=xlabels, 
            order=order(-apply(xTOM,1,sum)),
-           lineColors=.grey2red(100, .9, 1),
-           pointBg=xcolors)
+           lineColors=.grey2red(100, 1, 1),
+           pointBg=xcolors,
+           min.cex.points=1, max.cex.points=2,
+           min.cex.labels=.6, max.cex.labels=1.2)
 ```
 
-### Most connected gene with potential AR binding site <5kb upstream of TSS
+### Both copies of androgen receptor
+#### Find ids for both genes and get their 20 nearest neighbors
+```{r find ARs}
+ARdf = subset(genedf, grepl('androgen receptor', desc, ignore.case=T))
+ARdf
+
+arNN = lapply(as.list(ARdf$geneSym), 
+              function(g) .getNNeighbors(gene=g, tom=TOM, n=20))
+names(arNN) = ARdf$geneSym
+arNN
+```
