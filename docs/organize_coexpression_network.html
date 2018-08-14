@@ -326,7 +326,8 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </details>
 </li>
 <li>
@@ -345,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/b8ad9e796034295a52aae0b82a710ebefa042909" target="_blank">b8ad9e7</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/02ddff83ff8cbc6e6e04022aae3c71e0cf438d3f" target="_blank">02ddff8</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -354,9 +355,6 @@ Ignored files:
     Ignored:    analysis/.DS_Store
     Ignored:    docs/.DS_Store
     Ignored:    docs/figure/.DS_Store
-
-Unstaged changes:
-    Modified:   analysis/organize_coexpression_network.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -385,6 +383,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/02ddff83ff8cbc6e6e04022aae3c71e0cf438d3f/analysis/organize_coexpression_network.Rmd" target="_blank">02ddff8</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-13
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/02ddff83ff8cbc6e6e04022aae3c71e0cf438d3f/docs/organize_coexpression_network.html" target="_blank">02ddff8</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-13
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 html
@@ -875,6 +907,124 @@ aadacl4   0.05936069    0.809250206 -0.17913995   0.46306467
 aadat    -0.62586537    0.004151945 -0.46039357   0.04730207
 aagab    -0.20437796    0.401303427 -0.10688670   0.66317798
 aak1      0.46673174    0.043954277 -0.01378971   0.95531825</code></pre>
+</div>
+<div id="modgenes-is-a-list-of-vectors-that-hold-genes-assigned-to-each-module." class="section level3">
+<h3><code>modGenes</code> is a list of vectors that hold genes assigned to each module.</h3>
+<p><code>length(modGenes)</code> should equal <code>ncol(MEs)</code>, and <code>all(sapply(modGenes,length) == table(colors))</code> should equal <code>TRUE</code></p>
+<pre class="r"><code>length(modGenes)</code></pre>
+<pre><code>[1] 39</code></pre>
+<pre class="r"><code>sapply(modGenes,length)</code></pre>
+<pre><code>         black           blue          brown           cyan      darkgreen 
+           446            970            747            289            202 
+      darkgrey    darkmagenta darkolivegreen     darkorange        darkred 
+           187            153            154            180            203 
+ darkturquoise          green    greenyellow         grey60      lightcyan 
+           193            482            312            256            257 
+    lightgreen    lightyellow        magenta   midnightblue         orange 
+           253            209            435            279            182 
+    orangered4  paleturquoise           pink          plum1         purple 
+           110            157            439            115            366 
+           red      royalblue    saddlebrown         salmon        sienna3 
+           447            206            160            294            143 
+       skyblue       skyblue3      steelblue            tan      turquoise 
+           164            124            157            310           1666 
+        violet          white         yellow    yellowgreen 
+           155            175            667            124 </code></pre>
+<pre class="r"><code>lapply(head(modGenes), head)</code></pre>
+<pre><code>$black
+[1] &quot;aadat&quot;  &quot;acaa2&quot;  &quot;acbd7&quot;  &quot;acp1&quot;   &quot;acsbg1&quot; &quot;acsl1&quot; 
+
+$blue
+[1] &quot;aasdhppt&quot; &quot;abi2&quot;     &quot;abl1&quot;     &quot;abr&quot;      &quot;acp2&quot;     &quot;acvr2a&quot;  
+
+$brown
+[1] &quot;abhd17b&quot; &quot;abhd2&quot;   &quot;actb&quot;    &quot;adcy7&quot;   &quot;add1&quot;    &quot;adra1d&quot; 
+
+$cyan
+[1] &quot;aamp&quot;   &quot;abcg4&quot;  &quot;acap1&quot;  &quot;acvr1c&quot; &quot;aes&quot;    &quot;aff4&quot;  
+
+$darkgreen
+[1] &quot;abca2&quot; &quot;agrn&quot;  &quot;ap3d1&quot; &quot;atf6&quot;  &quot;atg2a&quot; &quot;atrn&quot; 
+
+$darkgrey
+[1] &quot;ak6&quot;     &quot;alad&quot;    &quot;alkbh2&quot;  &quot;alkbh6&quot;  &quot;anapc15&quot; &quot;arl16&quot;  </code></pre>
+</div>
+<div id="modkmes-is-a-list-where-each-element-is-a-data-frame-representing-a-module." class="section level3">
+<h3><code>modkMEs</code> is a list where each element is a data frame representing a module.</h3>
+<p><code>length(modkMEs)</code> should equal <code>length(modGenes)</code></p>
+<pre class="r"><code>length(modkMEs)</code></pre>
+<pre><code>[1] 39</code></pre>
+<pre class="r"><code>sapply(modkMEs,nrow)</code></pre>
+<pre><code>         black           blue          brown           cyan      darkgreen 
+           446            970            747            289            202 
+      darkgrey    darkmagenta darkolivegreen     darkorange        darkred 
+           187            153            154            180            203 
+ darkturquoise          green    greenyellow         grey60      lightcyan 
+           193            482            312            256            257 
+    lightgreen    lightyellow        magenta   midnightblue         orange 
+           253            209            435            279            182 
+    orangered4  paleturquoise           pink          plum1         purple 
+           110            157            439            115            366 
+           red      royalblue    saddlebrown         salmon        sienna3 
+           447            206            160            294            143 
+       skyblue       skyblue3      steelblue            tan      turquoise 
+           164            124            157            310           1666 
+        violet          white         yellow    yellowgreen 
+           155            175            667            124 </code></pre>
+<pre class="r"><code>lapply(head(modkMEs), head)</code></pre>
+<pre><code>$black
+              kMEblack   p.kMEblack
+LOC102307393 0.9560280 1.743488e-10
+LOC102292403 0.9406266 2.123346e-09
+mrpl53       0.9353837 4.281130e-09
+LOC102307597 0.9333418 5.537907e-09
+tmem14a      0.9299175 8.377954e-09
+ddx56        0.9285567 9.819420e-09
+
+$blue
+               kMEblue    p.kMEblue
+LOC102297293 0.9431223 1.486695e-09
+LOC102311440 0.9366242 3.646329e-09
+sec31b       0.9354000 4.272183e-09
+polr2a       0.9260100 1.310860e-08
+ppp2cb       0.9238067 1.669417e-08
+LOC102296020 0.9227194 1.876024e-08
+
+$brown
+              kMEbrown   p.kMEbrown
+tfrc         0.9432890 1.450906e-09
+ncf1         0.9070890 8.503558e-08
+LOC102292388 0.9049705 1.022391e-07
+gpnmb        0.9004945 1.488426e-07
+LOC102297372 0.8961017 2.115993e-07
+orc3         0.8950412 2.298211e-07
+
+$cyan
+               kMEcyan    p.kMEcyan
+LOC102290622 0.9359967 3.956292e-09
+LOC102305952 0.9190273 2.753946e-08
+gabbr2       0.9162467 3.634098e-08
+LOC102288615 0.9143540 4.365487e-08
+LOC102297792 0.9054710 9.792239e-08
+elfn2        0.9048318 1.034647e-07
+
+$darkgreen
+             kMEdarkgreen p.kMEdarkgreen
+rusc1           0.9664829   1.797513e-11
+syn2            0.9611266   6.223359e-11
+LOC102303963    0.9369837   3.478501e-09
+fam193a         0.9202902   2.420076e-08
+med14           0.9151428   4.046402e-08
+LOC102292902    0.9143720   4.357967e-08
+
+$darkgrey
+             kMEdarkgrey p.kMEdarkgrey
+LOC102294491   0.9363003  3.803539e-09
+eif1ad         0.9259924  1.313433e-08
+LOC102298520   0.9176204  3.172654e-08
+LOC102311572   0.8963037  2.082768e-07
+dynlrb2        0.8931490  2.657441e-07
+anapc15        0.8827993  5.622641e-07</code></pre>
 </div>
 </div>
 <div id="session-information" class="section level2">
