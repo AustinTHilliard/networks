@@ -34,29 +34,32 @@ sapply(net,length)
 ```{r getNetworkBasics}
 .getNetworkBasics(net, DATA, "")
 ls()
-# dendro and blockGenes are mostly just used for plotting.
-# if there is only one network block, re-save the dendrogram and set blockGenes to NULL.
+```
+
+dendro and blockGenes are mostly just used for plotting. If there is only one network block, re-save the dendrogram and set blockGenes to NULL.
+```{r blockGenes and dendro}
 if (length(blockGenes) == 1) {
   dendro = dendro[[1]]
   blockGenes = NULL
 } 
 dendro
 blockGenes
+```
 
-# colors is a vector where each entry represents the module assignment for a gene.
-#  It's ordered the same as the columns of the expression data (DATA)
-#   i.e., colors[n] is the module of the gene represented by DATA[, n], and length(colors) should equal ncol(DATA).
+colors is a vector where each entry represents the module assignment for a gene. It's ordered the same as the columns of the expression data (DATA), i.e. colors[n] is the module of the gene represented by DATA[, n], and length(colors) should equal ncol(DATA).
+```{r colors}
 length(colors)
 sort(table(colors))
+```
 
-# MEs is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and ncol(MEs) should equal length(unique(colors)).
-#  The row order corresponds to the samples represented by the rows of DATA
-#   i.e., MEs[m, n] is the PC1 loading for the nth module on sample DATA[m, ].
+MEs is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and ncol(MEs) should equal length(unique(colors)). The row order corresponds to the samples represented by the rows of DATA, i.e. MEs[m, n] is the PC1 loading for the nth module on sample DATA[m, ].
+```{r MEs}
 dim(MEs)
 MEs[1:5, 1:5]
+```
 
-# kME is a data frame where each row is a gene and the columns represent the correlations (with p-values) to MEs.
-#  nrow(kMEs) should equal ncol(DATA), but the genes may not be ordered the same, and ncol(kMEs) should equal 2*ncol(MEs).
+kME is a data frame where each row is a gene and the columns represent the correlations (with p-values) to MEs. nrow(kMEs) should equal ncol(DATA) (although the genes may not be ordered the same) and ncol(kMEs) should equal 2*ncol(MEs).
+``` {r kME}
 dim(kME)
-kME[1:5, 1:5]
+kME[1:5, 1:6]
 ```
