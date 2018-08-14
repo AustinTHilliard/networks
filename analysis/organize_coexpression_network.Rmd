@@ -10,6 +10,7 @@ output: workflowr::wflow_html
 ```{r start clean and source functions}
 rm(list=ls())
 options(stringsAsFactors=FALSE)
+library(WGCNA)
 source("code/organize_coexpression_network_functions.R")
 ```
 <!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
@@ -24,4 +25,30 @@ ls()
 dim(DATA)
 DATA[1:5, 1:5]
 sapply(net,length)
+```
+
+#### Generate important network objects
+This function will save network objects into the workspace (dendro, blockGenes, colors, MEs), compute kME for every gene-ME pair (kME), create a list of vectors holding genes assigned to each module (modGenes), and create a list of data frames holding kME and p.kME for genes in each module (modkMEs)
+```{r getNetworkBasics}
+.getNetworkBasics(net, DATA, "")
+ls()
+# if there is only one network block, re-save the dendrogram and delete blockGenes
+if (length(blockGenes) == 1) {
+  dendro = dendro[[1]]
+  rm(blockGenes)
+} else {
+  # otherwise look at the head of each blockGenes element
+  lapply(blockGenes,head)
+}
+
+# look at the head of each dendrogram element
+dendro
+lapply(dendro, function(d) lapply(d, head))
+
+# colors holds the module assignment for each gene (column) in DATA
+length(colors)
+sort(table(colors))
+
+#
+dim(MEs)
 ```
