@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/6a807748e385a3df3070eac2d150f841a9a171e6" target="_blank">6a80774</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/388e3cabe105c678331aac10ab6211f1a40b26c2" target="_blank">388e3ca</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -383,6 +383,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/388e3cabe105c678331aac10ab6211f1a40b26c2/analysis/organize_coexpression_network.Rmd" target="_blank">388e3ca</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-13
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/619779eadde343d14a6d79401566669059be039d/docs/organize_coexpression_network.html" target="_blank">619779e</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-13
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -725,9 +759,8 @@ ASC_B6_lib4-ACAGTG-Dec2015-3 5.463025 0.9040657 2.929339 4.497199 5.547951</code
 ls()</code></pre>
 <pre><code>[1] &quot;blockGenes&quot; &quot;colors&quot;     &quot;DATA&quot;       &quot;dendro&quot;     &quot;kME&quot;       
 [6] &quot;MEs&quot;        &quot;modGenes&quot;   &quot;modkMEs&quot;    &quot;net&quot;       </code></pre>
-<pre class="r"><code># dendro and blockGenes are mostly just used for plotting.
-# if there is only one network block, re-save the dendrogram and set blockGenes to NULL.
-if (length(blockGenes) == 1) {
+<p>dendro and blockGenes are mostly just used for plotting. If there is only one network block, re-save the dendrogram and set blockGenes to NULL.</p>
+<pre class="r"><code>if (length(blockGenes) == 1) {
   dendro = dendro[[1]]
   blockGenes = NULL
 } 
@@ -740,10 +773,8 @@ Cluster method   : average
 Number of objects: 12368 </code></pre>
 <pre class="r"><code>blockGenes</code></pre>
 <pre><code>NULL</code></pre>
-<pre class="r"><code># colors is a vector where each entry represents the module assignment for a gene.
-#  It&#39;s ordered the same as the columns of the expression data (DATA)
-#   i.e., colors[n] is the module of the gene represented by DATA[, n], and length(colors) should equal ncol(DATA).
-length(colors)</code></pre>
+<p>colors is a vector where each entry represents the module assignment for a gene. It’s ordered the same as the columns of the expression data (DATA), i.e. colors[n] is the module of the gene represented by DATA[, n], and length(colors) should equal ncol(DATA).</p>
+<pre class="r"><code>length(colors)</code></pre>
 <pre><code>[1] 12368</code></pre>
 <pre class="r"><code>sort(table(colors))</code></pre>
 <pre><code>colors
@@ -763,10 +794,8 @@ length(colors)</code></pre>
            435            439            446            447            482 
         yellow          brown           blue      turquoise 
            667            747            970           1666 </code></pre>
-<pre class="r"><code># MEs is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and ncol(MEs) should equal length(unique(colors)).
-#  The row order corresponds to the samples represented by the rows of DATA
-#   i.e., MEs[m, n] is the PC1 loading for the nth module on sample DATA[m, ].
-dim(MEs)</code></pre>
+<p>MEs is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and ncol(MEs) should equal length(unique(colors)). The row order corresponds to the samples represented by the rows of DATA, i.e. MEs[m, n] is the PC1 loading for the nth module on sample DATA[m, ].</p>
+<pre class="r"><code>dim(MEs)</code></pre>
 <pre><code>[1] 19 39</code></pre>
 <pre class="r"><code>MEs[1:5, 1:5]</code></pre>
 <pre><code>  MEroyalblue  MEskyblue      MEblue    MEsalmon MEdarkorange
@@ -775,17 +804,22 @@ dim(MEs)</code></pre>
 3 -0.43818028 -0.3272218  0.18039764 -0.30899102   0.11341557
 4  0.07641421  0.1781509  0.02368737 -0.03730813   0.03773488
 5  0.24661038 -0.1307481 -0.26748884 -0.18046119   0.15248639</code></pre>
-<pre class="r"><code># kME is a data frame where each row is a gene and the columns represent the correlations (with p-values) to MEs.
-#  nrow(kMEs) should equal ncol(DATA), but the genes may not be ordered the same, and ncol(kMEs) should equal 2*ncol(MEs).
-dim(kME)</code></pre>
+<p>kME is a data frame where each row is a gene and the columns represent the correlations (with p-values) to MEs. nrow(kMEs) should equal ncol(DATA) (although the genes may not be ordered the same) and ncol(kMEs) should equal 2*ncol(MEs).</p>
+<pre class="r"><code>dim(kME)</code></pre>
 <pre><code>[1] 12368    78</code></pre>
-<pre class="r"><code>kME[1:5, 1:5]</code></pre>
+<pre class="r"><code>kME[1:5, 1:6]</code></pre>
 <pre><code>        kMEroyalblue p.kMEroyalblue  kMEskyblue p.kMEskyblue    kMEblue
 aacs     -0.07509633    0.759950119 -0.20145678   0.40821189 -0.1803842
 aadacl4   0.05936069    0.809250206 -0.17913995   0.46306467 -0.4152153
 aadat    -0.62586537    0.004151945 -0.46039357   0.04730207 -0.1573806
 aagab    -0.20437796    0.401303427 -0.10688670   0.66317798 -0.3216884
-aak1      0.46673174    0.043954277 -0.01378971   0.95531825 -0.2973973</code></pre>
+aak1      0.46673174    0.043954277 -0.01378971   0.95531825 -0.2973973
+         p.kMEblue
+aacs    0.45991184
+aadacl4 0.07708983
+aadat   0.51992347
+aagab   0.17925898
+aak1    0.21626042</code></pre>
 </div>
 </div>
 </div>
