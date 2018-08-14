@@ -11,6 +11,8 @@ output: workflowr::wflow_html
 rm(list=ls())
 options(stringsAsFactors=FALSE)
 library(WGCNA)
+
+# source other code, some of which requires WGNCA functions
 source("code/organize_coexpression_network_functions.R")
 ```
 <!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
@@ -28,27 +30,33 @@ sapply(net,length)
 ```
 
 #### Generate important network objects
-This function will save network objects into the workspace (dendro, blockGenes, colors, MEs), compute kME for every gene-ME pair (kME), create a list of vectors holding genes assigned to each module (modGenes), and create a list of data frames holding kME and p.kME for genes in each module (modkMEs)
+<!--This function will save network objects into the workspace (dendro, blockGenes, colors, MEs), compute kME for every gene-ME pair (kME), create a list of vectors holding genes assigned to each module (modGenes), and create a list of data frames holding kME and p.kME for genes in each module (modkMEs)-->
 ```{r getNetworkBasics}
 .getNetworkBasics(net, DATA, "")
 ls()
-# if there is only one network block, re-save the dendrogram and delete blockGenes
+# dendro and blockGenes are mostly just used for plotting.
+# if there is only one network block, re-save the dendrogram and set blockGenes to NULL.
 if (length(blockGenes) == 1) {
   dendro = dendro[[1]]
-  rm(blockGenes)
-} else {
-  # otherwise look at the head of each blockGenes element
-  lapply(blockGenes,head)
-}
-
-# look at the head of each dendrogram element
+  blockGenes = NULL
+} 
 dendro
-lapply(dendro, function(d) lapply(d, head))
+blockGenes
 
-# colors holds the module assignment for each gene (column) in DATA
+# colors is a vector where each entry represents the module assignment for a gene.
+#  It's ordered the same as the columns of the expression data (DATA)
+#   i.e., colors[n] is the module of the gene represented by DATA[, n], and length(colors) should equal ncol(DATA).
 length(colors)
 sort(table(colors))
 
-#
+# MEs is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and ncol(MEs) should equal length(unique(colors)).
+#  The row order corresponds to the samples represented by the rows of DATA
+#   i.e., MEs[m, n] is the PC1 loading for the nth module on sample DATA[m, ].
 dim(MEs)
+MEs[1:5, 1:5]
+
+# kME is a data frame where each row is a gene and the columns represent the correlations (with p-values) to MEs.
+#  nrow(kMEs) should equal ncol(DATA), but the genes may not be ordered the same, and ncol(kMEs) should equal 2*ncol(MEs).
+dim(kME)
+kME[1:5, 1:5]
 ```
