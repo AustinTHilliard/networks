@@ -7,7 +7,7 @@ output: workflowr::wflow_html
   
 ## Setup
 ### Clean workspace, set options, load functions
-```{r start clean and source functions}
+```{r start clean and source functions, message=FALSE}
 rm(list=ls())
 options(stringsAsFactors=FALSE)
 library(WGCNA)
@@ -69,5 +69,5 @@ MEs[1:5, 1:5]
 `kME` is a data frame where each row is a gene and the columns represent the correlations (with p-values) to `MEs`. `nrow(kMEs)` should equal `ncol(DATA)` (although genes may not be in same order) and `ncol(kMEs)` should equal `2*ncol(MEs)`.
 ``` {r kME}
 dim(kME)
-kME[1:5, 1:6]
+kME[1:5, 1:4]
 ```
