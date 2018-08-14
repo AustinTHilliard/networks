@@ -5,9 +5,8 @@ date: '`r format(Sys.time(), "%d %B, %Y")`'
 output: workflowr::wflow_html
 ---
   
-## Setup
-### Clean workspace, set options, load functions
-```{r start clean and source functions, message=FALSE}
+## Clean workspace, set options, load functions
+```{r start clean and source functions, message=FALSE, , results="hide"}
 rm(list=ls())
 options(stringsAsFactors=FALSE)
 library(WGCNA)
@@ -17,8 +16,7 @@ source("code/organize_coexpression_network_functions.R")
 ```
 <!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
 
-### Load and prepare data
-#### Load expression and network data 
+## Load network and expression data
 ```{r load data}
 # males_6ASC_7D_6ND_0var_medtpm.5_.33zeros_log2_preProc-dev2.5-IAC2_batch-lib-tank-seqdate_replace-negs/
 load("data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData")
@@ -26,25 +24,26 @@ load("data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RDat
 ls()
 ```
 
-`DATA` is a data frame of gene expression, where each row is a sample and each column is a gene.
+### `DATA` is a data frame of gene expression, where each row is a sample and each column is a gene.
 ```{r DATA}
 dim(DATA)
 DATA[1:5, 1:5]
 ```
 
-`net` is a list holding the output from `WGCNA::blockwiseModules`.
+### `net` is a list holding the output from `WGCNA::blockwiseModules`.
 ```{r net}
 sapply(net,length)
 ```
 
-#### Generate important network objects
-`.getNetworkBasics()` will save network objects into the workspace (`dendro`, `blockGenes`, `colors`, `MEs`), compute kME for every gene-ME pair (`kME`), create a list of vectors holding genes assigned to each module (`modGenes`), and create a list of data frames holding kME and p.kME for genes in each module (`modkMEs`)
+## Generate important network objects
+<!--### `.getNetworkBasics()` will save network objects into the workspace (`dendro`, `blockGenes`, `colors`, `MEs`), compute kME for every gene-ME pair (`kME`), create a list of vectors holding genes assigned to each module (`modGenes`), and create a list of data frames holding kME and p.kME for genes in each module (`modkMEs`)-->
 ```{r getNetworkBasics}
 .getNetworkBasics(net, DATA, "")
 ls()
 ```
 
-`dendro` and `blockGenes` are mostly just used for plotting. If there is only one network block, re-save the dendrogram and set blockGenes to NULL.
+### `dendro` and `blockGenes` are mostly just used for plotting. 
+If there is only one network block, re-save the dendrogram and set blockGenes to NULL.
 ```{r blockGenes and dendro}
 if (length(blockGenes) == 1) {
   dendro = dendro[[1]]
@@ -54,20 +53,39 @@ dendro
 blockGenes
 ```
 
-`colors` is a vector where each entry represents the module assignment for a gene. It's ordered the same as the columns of the expression data (`DATA`), i.e. `colors[n]` is the module of the gene represented by `DATA[, n]`, and `length(colors)` should equal `ncol(DATA)`.
+### `colors` is a vector where each entry represents the module assignment for a gene.
+It's ordered the same as the columns of the expression data (`DATA`), i.e. `colors[n]` is the module of the gene represented by `DATA[, n]`, and `length(colors)` should equal `ncol(DATA)`.
 ```{r colors}
 length(colors)
 sort(table(colors))
 ```
 
-`MEs` is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and `ncol(MEs)` should equal `length(unique(colors))`. The row order corresponds to the samples represented by the rows of `DATA`, i.e. `MEs[m, n]` is the PC1 loading for the nth module on sample `DATA[m, ]`.
+### `MEs` is a matrix where each column is a module eigengene (ME), ordered by how correlated they are.
+`ncol(MEs)` should equal `length(unique(colors))`. The row order corresponds to the samples represented by the rows of `DATA`, i.e. `MEs[m, n]` is the PC1 loading for the nth module on sample `DATA[m, ]`.
 ```{r MEs}
 dim(MEs)
 MEs[1:5, 1:5]
 ```
 
-`kME` is a data frame where each row is a gene and the columns represent the correlations (with p-values) to `MEs`. `nrow(kMEs)` should equal `ncol(DATA)` (although genes may not be in same order) and `ncol(kMEs)` should equal `2*ncol(MEs)`.
+### `kME` is a data frame where each row is a gene and the columns represent the correlations (with p-values) to `MEs`. 
+`nrow(kMEs)` should equal `ncol(DATA)` (although genes may not be in same order) and `ncol(kMEs)` should equal `2*ncol(MEs)`.
 ``` {r kME}
 dim(kME)
 kME[1:5, 1:4]
+```
+
+### `modGenes` is a list of vectors that hold genes assigned to each module.
+`length(modGenes)` should equal `ncol(MEs)`, and `all(sapply(modGenes,length) == table(colors))` should equal `TRUE`
+```{r modGenes}
+length(modGenes)
+sapply(modGenes,length)
+lapply(head(modGenes), head)
+```
+
+### `modkMEs` is a list where each element is a data frame representing a module. 
+`length(modkMEs)` should equal `length(modGenes)`
+```{r modkMEs}
+length(modkMEs)
+sapply(modkMEs,nrow)
+lapply(head(modkMEs), head)
 ```

@@ -326,8 +326,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -346,7 +345,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/0e1a0db9d450936fde3fed382dace1aeb58f6871" target="_blank">0e1a0db</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/b8ad9e796034295a52aae0b82a710ebefa042909" target="_blank">b8ad9e7</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -355,6 +354,9 @@ Ignored files:
     Ignored:    analysis/.DS_Store
     Ignored:    docs/.DS_Store
     Ignored:    docs/figure/.DS_Store
+
+Unstaged changes:
+    Modified:   analysis/organize_coexpression_network.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -383,6 +385,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/b8ad9e796034295a52aae0b82a710ebefa042909/docs/organize_coexpression_network.html" target="_blank">b8ad9e7</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-08-13
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -745,54 +764,25 @@ initialize organize_coexpression_network.Rmd
 </ul>
 <p></details></p>
 <hr />
-<div id="setup" class="section level2">
-<h2>Setup</h2>
-<div id="clean-workspace-set-options-load-functions" class="section level3">
-<h3>Clean workspace, set options, load functions</h3>
+<div id="clean-workspace-set-options-load-functions" class="section level2">
+<h2>Clean workspace, set options, load functions</h2>
 <pre class="r"><code>rm(list=ls())
 options(stringsAsFactors=FALSE)
-library(WGCNA)</code></pre>
-<pre><code>==========================================================================
-*
-*  Package WGCNA 1.63 loaded.
-*
-*    Important note: It appears that your system supports multi-threading,
-*    but it is not enabled within WGCNA in R. 
-*    To allow multi-threading within WGCNA with all available cores, use 
-*
-*          allowWGCNAThreads()
-*
-*    within R. Use disableWGCNAThreads() to disable threading if necessary.
-*    Alternatively, set the following environment variable on your system:
-*
-*          ALLOW_WGCNA_THREADS=&lt;number_of_processors&gt;
-*
-*    for example 
-*
-*          ALLOW_WGCNA_THREADS=4
-*
-*    To set the environment variable in linux bash shell, type 
-*
-*           export ALLOW_WGCNA_THREADS=4
-*
-*     before running R. Other operating systems or shells will
-*     have a similar command to achieve the same aim.
-*
-==========================================================================</code></pre>
-<pre class="r"><code># source other code, some of which requires WGNCA functions
+library(WGCNA)
+
+# source other code, some of which requires WGNCA functions
 source(&quot;code/organize_coexpression_network_functions.R&quot;)</code></pre>
 <!--#### Some functions in [.R](https://github.com/AustinTHilliard/networks/blob/master/code/.R) are from the [WGNCA library (version 1.63)](https://cran.r-project.org/web/packages/WGCNA/index.html). I included them here rather than require you to install WGCNA-->
 </div>
-<div id="load-and-prepare-data" class="section level3">
-<h3>Load and prepare data</h3>
-<div id="load-expression-and-network-data" class="section level4">
-<h4>Load expression and network data</h4>
+<div id="load-network-and-expression-data" class="section level2">
+<h2>Load network and expression data</h2>
 <pre class="r"><code># males_6ASC_7D_6ND_0var_medtpm.5_.33zeros_log2_preProc-dev2.5-IAC2_batch-lib-tank-seqdate_replace-negs/
 load(&quot;data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57DATA.RData&quot;)
 load(&quot;data/DATAfilt_signed_p18_ds4_mm100_mch0.2_mKME0.3_mCoreKME0.5run57NET.RData&quot;)
 ls()</code></pre>
 <pre><code>[1] &quot;DATA&quot; &quot;net&quot; </code></pre>
-<p><code>DATA</code> is a data frame of gene expression, where each row is a sample and each column is a gene.</p>
+<div id="data-is-a-data-frame-of-gene-expression-where-each-row-is-a-sample-and-each-column-is-a-gene." class="section level3">
+<h3><code>DATA</code> is a data frame of gene expression, where each row is a sample and each column is a gene.</h3>
 <pre class="r"><code>dim(DATA)</code></pre>
 <pre><code>[1]    19 12368</code></pre>
 <pre class="r"><code>DATA[1:5, 1:5]</code></pre>
@@ -802,21 +792,26 @@ D_B5_lib4-CGATGT-Dec2015-1   5.241799 1.0347914 2.922862 4.489043 5.357542
 D_B5_lib3-ACAGTG-Dec2015-2   5.542794 0.4733001 3.173743 4.553734 5.100207
 ND_B6_lib4-CTTGTA-Dec2015-2  5.339031 0.5076581 2.773538 4.435222 5.296041
 ASC_B6_lib4-ACAGTG-Dec2015-3 5.463025 0.9040657 2.929339 4.497199 5.547951</code></pre>
-<p><code>net</code> is a list holding the output from <code>WGCNA::blockwiseModules</code>.</p>
+</div>
+<div id="net-is-a-list-holding-the-output-from-wgcnablockwisemodules." class="section level3">
+<h3><code>net</code> is a list holding the output from <code>WGCNA::blockwiseModules</code>.</h3>
 <pre class="r"><code>sapply(net,length)</code></pre>
 <pre><code>        colors unmergedColors            MEs    goodSamples      goodGenes 
          12368          12368             39             19          12368 
    dendrograms       TOMFiles     blockGenes         blocks          MEsOK 
              1              0              1          12368              1 </code></pre>
 </div>
-<div id="generate-important-network-objects" class="section level4">
-<h4>Generate important network objects</h4>
-<p><code>.getNetworkBasics()</code> will save network objects into the workspace (<code>dendro</code>, <code>blockGenes</code>, <code>colors</code>, <code>MEs</code>), compute kME for every gene-ME pair (<code>kME</code>), create a list of vectors holding genes assigned to each module (<code>modGenes</code>), and create a list of data frames holding kME and p.kME for genes in each module (<code>modkMEs</code>)</p>
+</div>
+<div id="generate-important-network-objects" class="section level2">
+<h2>Generate important network objects</h2>
+<!--### `.getNetworkBasics()` will save network objects into the workspace (`dendro`, `blockGenes`, `colors`, `MEs`), compute kME for every gene-ME pair (`kME`), create a list of vectors holding genes assigned to each module (`modGenes`), and create a list of data frames holding kME and p.kME for genes in each module (`modkMEs`)-->
 <pre class="r"><code>.getNetworkBasics(net, DATA, &quot;&quot;)
 ls()</code></pre>
 <pre><code>[1] &quot;blockGenes&quot; &quot;colors&quot;     &quot;DATA&quot;       &quot;dendro&quot;     &quot;kME&quot;       
 [6] &quot;MEs&quot;        &quot;modGenes&quot;   &quot;modkMEs&quot;    &quot;net&quot;       </code></pre>
-<p><code>dendro</code> and <code>blockGenes</code> are mostly just used for plotting. If there is only one network block, re-save the dendrogram and set blockGenes to NULL.</p>
+<div id="dendro-and-blockgenes-are-mostly-just-used-for-plotting." class="section level3">
+<h3><code>dendro</code> and <code>blockGenes</code> are mostly just used for plotting.</h3>
+<p>If there is only one network block, re-save the dendrogram and set blockGenes to NULL.</p>
 <pre class="r"><code>if (length(blockGenes) == 1) {
   dendro = dendro[[1]]
   blockGenes = NULL
@@ -830,7 +825,10 @@ Cluster method   : average
 Number of objects: 12368 </code></pre>
 <pre class="r"><code>blockGenes</code></pre>
 <pre><code>NULL</code></pre>
-<p><code>colors</code> is a vector where each entry represents the module assignment for a gene. It’s ordered the same as the columns of the expression data (<code>DATA</code>), i.e. <code>colors[n]</code> is the module of the gene represented by <code>DATA[, n]</code>, and <code>length(colors)</code> should equal <code>ncol(DATA)</code>.</p>
+</div>
+<div id="colors-is-a-vector-where-each-entry-represents-the-module-assignment-for-a-gene." class="section level3">
+<h3><code>colors</code> is a vector where each entry represents the module assignment for a gene.</h3>
+<p>It’s ordered the same as the columns of the expression data (<code>DATA</code>), i.e. <code>colors[n]</code> is the module of the gene represented by <code>DATA[, n]</code>, and <code>length(colors)</code> should equal <code>ncol(DATA)</code>.</p>
 <pre class="r"><code>length(colors)</code></pre>
 <pre><code>[1] 12368</code></pre>
 <pre class="r"><code>sort(table(colors))</code></pre>
@@ -851,7 +849,10 @@ Number of objects: 12368 </code></pre>
            435            439            446            447            482 
         yellow          brown           blue      turquoise 
            667            747            970           1666 </code></pre>
-<p><code>MEs</code> is a matrix where each column is a module eigengene (ME), ordered by how correlated they are, and <code>ncol(MEs)</code> should equal <code>length(unique(colors))</code>. The row order corresponds to the samples represented by the rows of <code>DATA</code>, i.e. <code>MEs[m, n]</code> is the PC1 loading for the nth module on sample <code>DATA[m, ]</code>.</p>
+</div>
+<div id="mes-is-a-matrix-where-each-column-is-a-module-eigengene-me-ordered-by-how-correlated-they-are." class="section level3">
+<h3><code>MEs</code> is a matrix where each column is a module eigengene (ME), ordered by how correlated they are.</h3>
+<p><code>ncol(MEs)</code> should equal <code>length(unique(colors))</code>. The row order corresponds to the samples represented by the rows of <code>DATA</code>, i.e. <code>MEs[m, n]</code> is the PC1 loading for the nth module on sample <code>DATA[m, ]</code>.</p>
 <pre class="r"><code>dim(MEs)</code></pre>
 <pre><code>[1] 19 39</code></pre>
 <pre class="r"><code>MEs[1:5, 1:5]</code></pre>
@@ -861,7 +862,10 @@ Number of objects: 12368 </code></pre>
 3 -0.43818028 -0.3272218  0.18039764 -0.30899102   0.11341557
 4  0.07641421  0.1781509  0.02368737 -0.03730813   0.03773488
 5  0.24661038 -0.1307481 -0.26748884 -0.18046119   0.15248639</code></pre>
-<p><code>kME</code> is a data frame where each row is a gene and the columns represent the correlations (with p-values) to <code>MEs</code>. <code>nrow(kMEs)</code> should equal <code>ncol(DATA)</code> (although genes may not be in same order) and <code>ncol(kMEs)</code> should equal <code>2*ncol(MEs)</code>.</p>
+</div>
+<div id="kme-is-a-data-frame-where-each-row-is-a-gene-and-the-columns-represent-the-correlations-with-p-values-to-mes." class="section level3">
+<h3><code>kME</code> is a data frame where each row is a gene and the columns represent the correlations (with p-values) to <code>MEs</code>.</h3>
+<p><code>nrow(kMEs)</code> should equal <code>ncol(DATA)</code> (although genes may not be in same order) and <code>ncol(kMEs)</code> should equal <code>2*ncol(MEs)</code>.</p>
 <pre class="r"><code>dim(kME)</code></pre>
 <pre><code>[1] 12368    78</code></pre>
 <pre class="r"><code>kME[1:5, 1:4]</code></pre>
@@ -871,7 +875,6 @@ aadacl4   0.05936069    0.809250206 -0.17913995   0.46306467
 aadat    -0.62586537    0.004151945 -0.46039357   0.04730207
 aagab    -0.20437796    0.401303427 -0.10688670   0.66317798
 aak1      0.46673174    0.043954277 -0.01378971   0.95531825</code></pre>
-</div>
 </div>
 </div>
 <div id="session-information" class="section level2">
