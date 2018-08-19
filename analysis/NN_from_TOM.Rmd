@@ -104,6 +104,8 @@ xTOM = TOM[xgenes, xgenes]
 # append gene of interest's name with "*"
 xlabels = gene1nn_genes
 xlabels[1] = paste0(xlabels[1],"*")
+
+# append TO with gene of interest to names of other genes
 xlabels[-1] = paste0(xlabels[-1], "_", signif(gene1nn,2))
 
 par(mai=c(.5,.5,.5,.5))
