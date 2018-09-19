@@ -1,0 +1,17 @@
+---
+title: "explore_genedf"
+author: "AustinTHilliard"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: workflowr::wflow_html
+---
+
+## Setup
+### Clean workspace, set options, load data
+```{r start clean and source functions}
+rm(list=ls())
+options(stringsAsFactors=FALSE)
+genedf = readRDS("data/genedf.rds")
+
+# look at the first few genes
+genedf[1:5,]
+```
