@@ -7,11 +7,57 @@ output: workflowr::wflow_html
 
 ## Setup
 ### Clean workspace, set options, load data
-```{r start clean and source functions}
+```{r start clean and load data}
 rm(list=ls())
 options(stringsAsFactors=FALSE)
 genedf = readRDS("data/genedf.rds")
 
 # look at the first few genes
 genedf[1:5,]
+```
+
+## Brief aside about data object types and how to index them
+### Note that data frames (like genedf) are different from matrices in R, even though they both just look like 2-d arrays
+#### Data frames are usually nicer to work with but some functions require a matrix
+``` {r data frames and matrices}
+# You can check what class an object is with the class() function
+class(genedf)
+
+# You can change the class with as.matrix(), as.data.frame(), etc.
+genemat = as.matrix(genedf)
+class(genemat)
+class(as.data.frame(genemat))
+```
+
+## Subsetting to specific genes
+### One gene of interest
+```{r x}
+# set a specific gene name, this should be the official A. burtoni gene symbol
+xgene = "ar"
+
+# is it present at all?
+any(genedf$geneSym == xgene)
+
+# Below are examples, we'll only look at first five rows
+# 1. Column number
+#    Note that this is the only way to access columns in a matrix
+#    
+genedf[1:5, 2]
+
+# ---
+
+# get its row number
+
+xgeneRow = which(genedf$geneSym == xgene)
+xgeneRow
+xgeneRow = which(genedf[, 2] == xgene)
+xgeneRow
+
+# these are equivalent
+subset(genedf, geneSym == xgene)
+genedf[xgeneRow, ]
+genedf[xgeneRow, ]
+
+
+
 ```
