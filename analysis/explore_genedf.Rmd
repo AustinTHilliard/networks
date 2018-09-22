@@ -17,9 +17,9 @@ genedf[1:5,]
 ```
 
 ## Brief aside about data object types and how to index them
-### Note that data frames (like genedf) are different from matrices in R, even though they both just look like 2-d arrays
+### Note that data frames (like `genedf`) are different from matrices in R, even though they both just look like 2-d arrays
 #### Data frames are usually nicer to work with but some functions require a matrix
-``` {r data frames and matrices}
+``` {r data frames and matrices 1}
 # You can check what class an object is with the class() function
 class(genedf)
 
@@ -28,6 +28,20 @@ genemat = as.matrix(genedf)
 class(genemat)
 class(as.data.frame(genemat))
 ```
+R objects have both a class and storage mode. The difference between class and mode can be quite confusing. If you're interested [look here](https://stackoverflow.com/questions/35445112/what-is-the-difference-between-mode-and-class-in-r), but ...
+
+
+
+### The main differences between data frames and matrices are:
+#### 1) Matrices can only contain one type of data, e.g. numbers or characters/strings
+
+``` {r data frames and matrices 2}
+# For example, genedf is a data frame that contains different types of data
+
+```
+
+#### 2) Matrices can only be indexed with numeric coordinates 
+
 
 ## Subsetting to specific genes
 ### One gene of interest
