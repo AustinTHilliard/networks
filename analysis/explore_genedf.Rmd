@@ -50,7 +50,7 @@ rm(factorColNums, factorCol)
 sapply(genedf, class)
 ```
 
-## Subsetting to specific genes
+## Subsetting to specific genes of interest
 ### One gene of interest
 #### Set a specific gene name
 This should be an official _A. burtoni_ gene symbol. Here we will use the androgen receptor gene _ar_.
@@ -132,10 +132,22 @@ xorder = order(genedf_androgenGenes$module, -genedf_androgenGenes$kME)
 genedf_androgenGenes[xorder, ]
 ```
 
-
-
+## Subsetting to genes with specific properties
+### Get genes with high kME in a specific module
 ```{r}
+xmod = "tan"
+kMEthresh = 0.9
 
+xmodRows = genedf$module == xmod
+kMEthreshRows = genedf$kME >= kMEthresh
+
+genedf_tan.9 = genedf[xmodRows & kMEthreshRows, ]
+genedf_tan.9
+
+# Note that we could have used subset() to do this in one line
+subset(genedf, (module == xmod) & (kME >= kMEthresh))
+# Or we could've indexed genedf directly 
+genedf[genedf$module == "tan" & genedf$kME >= 0.9, ]
 ```
 
 
