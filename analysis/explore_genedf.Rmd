@@ -89,7 +89,7 @@ Note that we could have just used `subset(genedf, geneSym == "ar")` from the beg
 
 ### Multiple genes of interest
 #### Define a vector of gene names
-Here we will get all the genes with "androgen" in their name/description (`desc` column)
+Here we will get all the genes with "androgen" in their full name/description (`desc` column)
 ```{r}
 # see ?grep
 androgenGeneRows = grep("androgen", genedf$desc, ignore.case=TRUE)
@@ -103,10 +103,10 @@ genedf_androgenGenes
 Get rid of columns we don't care about here.
 ```{r}
 # see ?match
-toRemove = c("geneID", "location", "strand", "width", "biotype", "brOVzOV.tfbs", "GC", "isoforms")
-toRemove = match(toRemove, names(genedf_androgenGenes))
-toRemove
-genedf_androgenGenes = genedf_androgenGenes[, -toRemove]
+toKeep = c("geneSym", "module", "kME", "dZ.ASC_D", "dZ.ASC_ND", "dZ.D_ND")
+toKeep = match(toKeep, names(genedf_androgenGenes))
+toKeep
+genedf_androgenGenes = genedf_androgenGenes[, toKeep]
 genedf_androgenGenes
 ```
 #### Sorting `genedf_androgenGenes` based on the values in some columns
@@ -114,6 +114,7 @@ Here we'll order by kME
 ```{r}
 # see ?order
 xorder = order(genedf_androgenGenes$kME)
+xorder
 genedf_androgenGenes[xorder, ]
 ```
 Notice that `order` sorts numeric values in increasing order by default.
@@ -126,6 +127,7 @@ genedf_androgenGenes[xorder, ]
 ```
 We can order by multiple columns at once.
 ```{r}
+# this will first sort alphabetically by module name, then by kME
 xorder = order(genedf_androgenGenes$module, -genedf_androgenGenes$kME)
 genedf_androgenGenes[xorder, ]
 ```
