@@ -135,24 +135,36 @@ genedf_androgenGenes[xorder, ]
 ## Subsetting to genes with specific properties
 ### Get genes with high kME in a specific module
 ```{r}
+# Set the module of interest and kME threshold
 xmod = "tan"
 kMEthresh = 0.9
 
+# Get the rows that satisfy our conditions
 xmodRows = genedf$module == xmod
 kMEthreshRows = genedf$kME >= kMEthresh
 
+# Subset genedf
 genedf_tan.9 = genedf[xmodRows & kMEthreshRows, ]
 genedf_tan.9
 
 # Note that we could have used subset() to do this in one line
 subset(genedf, (module == xmod) & (kME >= kMEthresh))
 # Or we could've indexed genedf directly 
-genedf[genedf$module == "tan" & genedf$kME >= 0.9, ]
+genedf[(genedf$module == "tan") & (genedf$kME >= 0.9), ]
 ```
 
-
+### Get genes in one of a few modules that have high kME and at least one TFBS hit
 ```{r}
+xmods = c("tan", "skyblue", "lightyellow", "royalblue")
+kMEquantile = 0.2
+tfbsCol = "brOVzOV.tfbs"
 
+xmodRows = genedf$module %in% xmods
+kMEquantileRows = genedf$kMEquantile <= kMEquantile
+tfbsHits = !is.na(genedf[, tfbsCol])
+
+genedf2 = genedf[xmodRows & kMEquantileRows & tfbsHits, ]
+genedf2
 ```
 
 
