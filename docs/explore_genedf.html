@@ -326,7 +326,8 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </details>
 </li>
 <li>
@@ -345,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/fbd305bd08fd8030cafc56e21aa36e74ba992508" target="_blank">fbd305b</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/b9fe23b5428d6a98df4ac8a82b224f8413662a53" target="_blank">b9fe23b</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -357,9 +358,6 @@ Ignored files:
 
 Untracked files:
     Untracked:  analysis/R_basics.Rmd
-
-Unstaged changes:
-    Modified:   analysis/explore_genedf.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -388,6 +386,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/b9fe23b5428d6a98df4ac8a82b224f8413662a53/analysis/explore_genedf.Rmd" target="_blank">b9fe23b</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/b9fe23b5428d6a98df4ac8a82b224f8413662a53/docs/explore_genedf.html" target="_blank">b9fe23b</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 html
@@ -794,7 +826,8 @@ genedf[xgeneRow, ]</code></pre>
 12294 0.00445317   0.7612903 -0.403068  2.564946 3.064838
                    desc
 12294 androgen receptor</code></pre>
-<pre class="r"><code># Use the subset() function, which effectively creates a vector like xgeneLogicalVec on the fly, then uses it to subset the data frame
+<pre class="r"><code># Use the subset() function
+# It effectively creates a temporary vector like xgeneLogicalVec then subsets genedf
 subset(genedf, geneSym == xgene)</code></pre>
 <pre><code>         geneID geneSym                    location strand width
 12294 102308855      ar scaffold_14:2324407-2334706      - 10300
