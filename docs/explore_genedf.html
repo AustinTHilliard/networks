@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/3c9fb1eab5520c40f17ba08e53265d458933e50e" target="_blank">3c9fb1e</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/f3bde49ae8421e1f6d20a8f3a1c2fcf44c4cb20d" target="_blank">f3bde49</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -386,6 +386,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/f3bde49ae8421e1f6d20a8f3a1c2fcf44c4cb20d/analysis/explore_genedf.Rmd" target="_blank">f3bde49</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/415507e5b22099dfbcea0600cc8b8c382a603e1f/docs/explore_genedf.html" target="_blank">415507e</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -877,8 +911,8 @@ sapply(genedf, class)</code></pre>
    &quot;numeric&quot;  &quot;character&quot; </code></pre>
 </div>
 </div>
-<div id="subsetting-to-specific-genes" class="section level2">
-<h2>Subsetting to specific genes</h2>
+<div id="subsetting-to-specific-genes-of-interest" class="section level2">
+<h2>Subsetting to specific genes of interest</h2>
 <div id="one-gene-of-interest" class="section level3">
 <h3>One gene of interest</h3>
 <div id="set-a-specific-gene-name" class="section level4">
@@ -1028,6 +1062,84 @@ genedf_androgenGenes[xorder, ]</code></pre>
 12294           ar     tan 0.6221098 -0.4030680  2.5649459  3.0648382
 3389        pmepa1  yellow 0.7850383  0.9734474  0.2051957 -0.7605058</code></pre>
 </div>
+</div>
+</div>
+<div id="subsetting-to-genes-with-specific-properties" class="section level2">
+<h2>Subsetting to genes with specific properties</h2>
+<div id="get-genes-with-high-kme-in-a-specific-module" class="section level3">
+<h3>Get genes with high kME in a specific module</h3>
+<pre class="r"><code>xmod = &quot;tan&quot;
+kMEthresh = 0.9
+
+xmodRows = genedf$module == xmod
+kMEthreshRows = genedf$kME &gt;= kMEthresh
+
+genedf_tan.9 = genedf[xmodRows &amp; kMEthreshRows, ]
+genedf_tan.9</code></pre>
+<pre><code>         geneID      geneSym                    location strand width
+12059 102291507 LOC102291507 scaffold_30:2395688-2403058      -  7371
+12060 102291103 LOC102291103   scaffold_65:823088-830228      -  7141
+12061 102306864       kdelr3  scaffold_294:175922-178991      +  3070
+12062 102311441        pde1b  scaffold_409:372845-395089      + 22245
+             biotype       GC isoforms brOVzOV.tfbs module       kME
+12059 protein_coding 0.368064        2         &lt;NA&gt;    tan 0.9161041
+12060 protein_coding 0.382439        1         &lt;NA&gt;    tan 0.9065263
+12061 protein_coding 0.454072        1         &lt;NA&gt;    tan 0.9046800
+12062 protein_coding 0.384266        3         &lt;NA&gt;    tan 0.9035075
+             p.kME kMEquantile  dZ.ASC_D dZ.ASC_ND  dZ.D_ND
+12059 3.685216e-08 0.003225806 -2.098996 0.4103913 2.524879
+12060 8.933864e-08 0.006451613 -2.517274 0.7181848 3.262570
+12061 1.048198e-07 0.009677419 -2.060971 1.1798751 3.285385
+12062 1.158231e-07 0.012903226 -2.623745 0.5129892 3.156099
+                                                                           desc
+12059                  voltage-dependent anion-selective channel protein 2-like
+12060                                  poly(U)-specific endoribonuclease-C-like
+12061 KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 3
+12062                                 phosphodiesterase 1B calmodulin-dependent</code></pre>
+<pre class="r"><code># Note that we could have used subset() to do this in one line
+subset(genedf, (module == xmod) &amp; (kME &gt;= kMEthresh))</code></pre>
+<pre><code>         geneID      geneSym                    location strand width
+12059 102291507 LOC102291507 scaffold_30:2395688-2403058      -  7371
+12060 102291103 LOC102291103   scaffold_65:823088-830228      -  7141
+12061 102306864       kdelr3  scaffold_294:175922-178991      +  3070
+12062 102311441        pde1b  scaffold_409:372845-395089      + 22245
+             biotype       GC isoforms brOVzOV.tfbs module       kME
+12059 protein_coding 0.368064        2         &lt;NA&gt;    tan 0.9161041
+12060 protein_coding 0.382439        1         &lt;NA&gt;    tan 0.9065263
+12061 protein_coding 0.454072        1         &lt;NA&gt;    tan 0.9046800
+12062 protein_coding 0.384266        3         &lt;NA&gt;    tan 0.9035075
+             p.kME kMEquantile  dZ.ASC_D dZ.ASC_ND  dZ.D_ND
+12059 3.685216e-08 0.003225806 -2.098996 0.4103913 2.524879
+12060 8.933864e-08 0.006451613 -2.517274 0.7181848 3.262570
+12061 1.048198e-07 0.009677419 -2.060971 1.1798751 3.285385
+12062 1.158231e-07 0.012903226 -2.623745 0.5129892 3.156099
+                                                                           desc
+12059                  voltage-dependent anion-selective channel protein 2-like
+12060                                  poly(U)-specific endoribonuclease-C-like
+12061 KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 3
+12062                                 phosphodiesterase 1B calmodulin-dependent</code></pre>
+<pre class="r"><code># Or we could&#39;ve indexed genedf directly 
+genedf[genedf$module == &quot;tan&quot; &amp; genedf$kME &gt;= 0.9, ]</code></pre>
+<pre><code>         geneID      geneSym                    location strand width
+12059 102291507 LOC102291507 scaffold_30:2395688-2403058      -  7371
+12060 102291103 LOC102291103   scaffold_65:823088-830228      -  7141
+12061 102306864       kdelr3  scaffold_294:175922-178991      +  3070
+12062 102311441        pde1b  scaffold_409:372845-395089      + 22245
+             biotype       GC isoforms brOVzOV.tfbs module       kME
+12059 protein_coding 0.368064        2         &lt;NA&gt;    tan 0.9161041
+12060 protein_coding 0.382439        1         &lt;NA&gt;    tan 0.9065263
+12061 protein_coding 0.454072        1         &lt;NA&gt;    tan 0.9046800
+12062 protein_coding 0.384266        3         &lt;NA&gt;    tan 0.9035075
+             p.kME kMEquantile  dZ.ASC_D dZ.ASC_ND  dZ.D_ND
+12059 3.685216e-08 0.003225806 -2.098996 0.4103913 2.524879
+12060 8.933864e-08 0.006451613 -2.517274 0.7181848 3.262570
+12061 1.048198e-07 0.009677419 -2.060971 1.1798751 3.285385
+12062 1.158231e-07 0.012903226 -2.623745 0.5129892 3.156099
+                                                                           desc
+12059                  voltage-dependent anion-selective channel protein 2-like
+12060                                  poly(U)-specific endoribonuclease-C-like
+12061 KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 3
+12062                                 phosphodiesterase 1B calmodulin-dependent</code></pre>
 </div>
 </div>
 <div id="session-information" class="section level2">
