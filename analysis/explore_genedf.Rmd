@@ -18,35 +18,83 @@ genedf[1:5,]
 
 ## Subsetting to specific genes
 ### One gene of interest
-```{r x}
-# set a specific gene name, this should be the official _A. burtoni_ gene symbol
+#### Set a specific gene name
+This should be the official _A. burtoni_ gene symbol. Here we will use the androgen receptor gene _ar_.
+```{r}
 xgene = "ar"
-
-# is it present at all in `genedf`?
-# `genedf$geneSym` accesses the column in `genedf` that has the name `geneSym`
-#   there are other ways to access columns in a data frame, but I prefer `$` notation because it's explicit
-head(genedf$geneSym)
-# `genedf$geneSym == xgene` creates a vector of logical/boolean values
-#   entry _i_ corresponds to row(_i_) in `genedf`
-head(genedf$geneSym == xgene)
-
-# create a vector testing whether entries in `genedf$geneSym` are the value stored in `xgene`,
-#   then check whether any entries are TRUE
+```
+#### Is the gene present at all in `genedf`, if so, where?
+`genedf$geneSym` accesses the column in `genedf` that has the name `geneSym`.
+There are other ways to access columns in a data frame, but I prefer `$` notation because it's explicit.
+```{r}
+genedf$geneSym[1:5]
+```
+`genedf$geneSym == xgene` creates a vector of logical/boolean values testing whether values in `genedf$geneSym` are equal to the value in `xgene`. Entry _i_ corresponds to row _i_ in `genedf`.
+```{r}
 xgeneLogicalVec = genedf$geneSym == xgene
+xgeneLogicalVec[1:5]
+```
+When a vector containing logical/boolean values is large we may want to test:
+1. Whether any entries are `TRUE`
+2. The exact locations of any entries that are `TRUE`
+```{r}
+# Note that the length of xgeneLogicalVec is the same as the number of rows in genedf
+length(xgeneLogicalVec)
+# Are any entries in xgeneLogicalVec TRUE?
 xgenePres = any(xgeneLogicalVec)
 xgenePres
-
-# sometimes we may want the exact row number 
-xgeneRow = which(xgenePres)
+# Which entries are TRUE?
+xgeneRow = which(xgeneLogicalVec)
 xgeneRow
-
-# multiple ways of accessing the row in `genedf` for the gene name stored in `xgene`
+```
+Here are multiple equivalent ways to access the row in `genedf` containing information for the gene whose name is stored in `xgene`.
+```{r}
+# Use the logical vector 
 genedf[xgeneLogicalVec, ]
-genedf[xgeneRow, ]
 genedf[genedf$geneSym == xgene, ]
+# Use the row number
+genedf[xgeneRow, ]
+# Use the subset() function, which effectively creates a logical vector equivalent to xgeneLogicalVec on the fly, then uses is to subset the data frame
 subset(genedf, geneSym == xgene)
 ```
 
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
 
 
 
