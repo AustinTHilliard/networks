@@ -317,12 +317,12 @@ div.section {
 
 <h1 class="title toc-ignore">explore_genedf</h1>
 <h4 class="author"><em>AustinTHilliard</em></h4>
-<h4 class="date"><em>21 September, 2018</em></h4>
+<h4 class="date"><em>23 September, 2018</em></h4>
 
 </div>
 
 
-<p><strong>Last updated:</strong> 2018-09-21</p>
+<p><strong>Last updated:</strong> 2018-09-23</p>
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/74dc1b3c27b099f52f6af86b77fb8b6a0cba9bc1" target="_blank">74dc1b3</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/33b065222e9edce406cc321faeadd0a3e641eabd" target="_blank">33b0652</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -355,6 +355,9 @@ Ignored files:
     Ignored:    analysis/.DS_Store
     Ignored:    docs/.DS_Store
     Ignored:    docs/figure/.DS_Store
+
+Untracked files:
+    Untracked:  analysis/R_basics.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -383,6 +386,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/33b065222e9edce406cc321faeadd0a3e641eabd/analysis/explore_genedf.Rmd" target="_blank">33b0652</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(“analysis/explore_genedf.Rmd”)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/319a314e6f5be917b8f974b9f2cf6b0f13ad582c/docs/explore_genedf.html" target="_blank">319a314</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-21
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -509,64 +546,36 @@ genedf[1:5,]</code></pre>
 5        synaptotagmin-2-like</code></pre>
 </div>
 </div>
-<div id="brief-aside-about-data-object-types-and-how-to-index-them" class="section level2">
-<h2>Brief aside about data object types and how to index them</h2>
-<div id="note-that-data-frames-like-genedf-are-different-from-matrices-in-r-even-though-they-both-just-look-like-2-d-arrays" class="section level3">
-<h3>Note that data frames (like <code>genedf</code>) are different from matrices in R, even though they both just look like 2-d arrays</h3>
-<div id="data-frames-are-usually-nicer-to-work-with-but-some-functions-require-a-matrix" class="section level4">
-<h4>Data frames are usually nicer to work with but some functions require a matrix</h4>
-<pre class="r"><code># You can check what class an object is with the class() function
-class(genedf)</code></pre>
-<pre><code>[1] &quot;data.frame&quot;</code></pre>
-<pre class="r"><code># You can change the class with as.matrix(), as.data.frame(), etc.
-genemat = as.matrix(genedf)
-class(genemat)</code></pre>
-<pre><code>[1] &quot;matrix&quot;</code></pre>
-<pre class="r"><code>class(as.data.frame(genemat))</code></pre>
-<pre><code>[1] &quot;data.frame&quot;</code></pre>
-<p>R objects have both a class and storage mode. The difference between class and mode can be quite confusing. If you’re interested <a href="https://stackoverflow.com/questions/35445112/what-is-the-difference-between-mode-and-class-in-r">look here</a>, but …</p>
-</div>
-</div>
-<div id="the-main-differences-between-data-frames-and-matrices-are" class="section level3">
-<h3>The main differences between data frames and matrices are:</h3>
-<div id="matrices-can-only-contain-one-type-of-data-e.g.numbers-or-charactersstrings" class="section level4">
-<h4>1) Matrices can only contain one type of data, e.g. numbers or characters/strings</h4>
-<pre class="r"><code># For example, genedf is a data frame that contains different types of data</code></pre>
-</div>
-<div id="matrices-can-only-be-indexed-with-numeric-coordinates" class="section level4">
-<h4>2) Matrices can only be indexed with numeric coordinates</h4>
-</div>
-</div>
-</div>
 <div id="subsetting-to-specific-genes" class="section level2">
 <h2>Subsetting to specific genes</h2>
 <div id="one-gene-of-interest" class="section level3">
 <h3>One gene of interest</h3>
-<pre class="r"><code># set a specific gene name, this should be the official A. burtoni gene symbol
+<pre class="r"><code># set a specific gene name, this should be the official _A. burtoni_ gene symbol
 xgene = &quot;ar&quot;
 
-# is it present at all?
-any(genedf$geneSym == xgene)</code></pre>
-<pre><code>[1] TRUE</code></pre>
-<pre class="r"><code># Below are examples, we&#39;ll only look at first five rows
-# 1. Column number
-#    Note that this is the only way to access columns in a matrix
-#    
-genedf[1:5, 2]</code></pre>
+# is it present at all in `genedf`?
+# `genedf$geneSym` accesses the column in `genedf` that has the name `geneSym`
+#   there are other ways to access columns in a data frame, but I prefer `$` notation because it&#39;s explicit
+head(genedf$geneSym)</code></pre>
 <pre><code>[1] LOC102290316 LOC106633764 LOC106633371 LOC106632815 LOC102295297
+[6] caprin1     
 12368 Levels: aacs aadacl4 aadat aagab aak1 aamp aanat aar2 aars ... zzz3</code></pre>
-<pre class="r"><code># ---
-
-# get its row number
-
-xgeneRow = which(genedf$geneSym == xgene)
+<pre class="r"><code># `genedf$geneSym == xgene` creates a vector of logical/boolean values
+#   entry _i_ corresponds to row(_i_) in `genedf`
+head(genedf$geneSym == xgene)</code></pre>
+<pre><code>[1] FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code># create a vector testing whether entries in `genedf$geneSym` are the value stored in `xgene`,
+#   then check whether any entries are TRUE
+xgeneLogicalVec = genedf$geneSym == xgene
+xgenePres = any(xgeneLogicalVec)
+xgenePres</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre class="r"><code># sometimes we may want the exact row number 
+xgeneRow = which(xgenePres)
 xgeneRow</code></pre>
-<pre><code>[1] 12294</code></pre>
-<pre class="r"><code>xgeneRow = which(genedf[, 2] == xgene)
-xgeneRow</code></pre>
-<pre><code>[1] 12294</code></pre>
-<pre class="r"><code># these are equivalent
-subset(genedf, geneSym == xgene)</code></pre>
+<pre><code>[1] 1</code></pre>
+<pre class="r"><code># multiple ways of accessing the row in `genedf` for the gene name stored in `xgene`
+genedf[xgeneLogicalVec, ]</code></pre>
 <pre><code>         geneID geneSym                    location strand width
 12294 102308855      ar scaffold_14:2324407-2334706      - 10300
              biotype       GC isoforms brOVzOV.tfbs module       kME
@@ -576,6 +585,13 @@ subset(genedf, geneSym == xgene)</code></pre>
                    desc
 12294 androgen receptor</code></pre>
 <pre class="r"><code>genedf[xgeneRow, ]</code></pre>
+<pre><code>     geneID      geneSym                  location strand width biotype
+1 102290316 LOC102290316 scaffold_2127:12983-14142      +  1160  lncRNA
+       GC isoforms brOVzOV.tfbs    module       kME        p.kME
+1 0.42931        1         &lt;NA&gt; royalblue 0.9447359 1.170552e-09
+  kMEquantile dZ.ASC_D dZ.ASC_ND   dZ.D_ND desc
+1 0.004854369 3.627612  1.282473 -2.296727 &lt;NA&gt;</code></pre>
+<pre class="r"><code>genedf[genedf$geneSym == xgene, ]</code></pre>
 <pre><code>         geneID geneSym                    location strand width
 12294 102308855      ar scaffold_14:2324407-2334706      - 10300
              biotype       GC isoforms brOVzOV.tfbs module       kME
@@ -584,7 +600,7 @@ subset(genedf, geneSym == xgene)</code></pre>
 12294 0.00445317   0.7612903 -0.403068  2.564946 3.064838
                    desc
 12294 androgen receptor</code></pre>
-<pre class="r"><code>genedf[xgeneRow, ]</code></pre>
+<pre class="r"><code>subset(genedf, geneSym == xgene)</code></pre>
 <pre><code>         geneID geneSym                    location strand width
 12294 102308855      ar scaffold_14:2324407-2334706      - 10300
              biotype       GC isoforms brOVzOV.tfbs module       kME
