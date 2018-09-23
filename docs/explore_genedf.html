@@ -326,7 +326,8 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </details>
 </li>
 <li>
@@ -345,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/ba66c8182e411db3f6b44b545718786ed9cf4f05" target="_blank">ba66c81</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/85f06b62804bd676f9faa83336f183f19e48d255" target="_blank">85f06b6</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -357,9 +358,6 @@ Ignored files:
 
 Untracked files:
     Untracked:  analysis/R_basics.Rmd
-
-Unstaged changes:
-    Modified:   analysis/explore_genedf.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -388,6 +386,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/85f06b62804bd676f9faa83336f183f19e48d255/analysis/explore_genedf.Rmd" target="_blank">85f06b6</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/85f06b62804bd676f9faa83336f183f19e48d255/docs/explore_genedf.html" target="_blank">85f06b6</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 html
@@ -632,7 +664,8 @@ genedf = readRDS(&quot;data/genedf.rds&quot;)</code></pre>
 3                        &lt;NA&gt;
 4 nuclear factor 7 ovary-like
 5        synaptotagmin-2-like</code></pre>
-<p>Note that official <em>A. burtoni</em> gene symbols are stored in the <code>geneSym</code> column. Right now the values in this column are stored as <code>factors</code>, but we want them to be <code>character</code> strings instead.</p>
+<p>Note that official <em>A. burtoni</em> gene symbols are stored in the <code>geneSym</code> column.<br />
+We’ll see that right now the values in this column are stored as <code>factors</code>, but we want them to be <code>character</code> strings instead.</p>
 <pre class="r"><code># The fact that the output tells us there are 12368 &quot;levels&quot; is a tip-off that the values in this column are stored as factors.
 genedf$geneSym[1:5]</code></pre>
 <pre><code>[1] LOC102290316 LOC106633764 LOC106633371 LOC106632815 LOC102295297
@@ -643,7 +676,8 @@ genedf$geneSym[1:5]</code></pre>
 <pre><code>[1] &quot;LOC102290316&quot; &quot;LOC106633764&quot; &quot;LOC106633371&quot; &quot;LOC106632815&quot;
 [5] &quot;LOC102295297&quot;</code></pre>
 <p>In fact, let’s check whether other columns of <code>genedf</code> store values as factors, and if so, convert them to characters.</p>
-<pre class="r"><code>genedfColClasses = sapply(genedf, class)
+<pre class="r"><code># create a vector holding the class of each genedf column
+genedfColClasses = sapply(genedf, class)
 genedfColClasses</code></pre>
 <pre><code>      geneID      geneSym     location       strand        width 
     &quot;factor&quot;  &quot;character&quot;     &quot;factor&quot;     &quot;factor&quot;    &quot;integer&quot; 
@@ -653,9 +687,21 @@ genedfColClasses</code></pre>
    &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot; 
      dZ.D_ND         desc 
    &quot;numeric&quot;  &quot;character&quot; </code></pre>
-<pre class="r"><code>genedfFactorCols = genedfColClasses == &quot;factor&quot;
-
+<pre class="r"><code># create a vector that denotes which columns are factors
+genedfFactorCols = genedfColClasses == &quot;factor&quot;
+genedfFactorCols</code></pre>
+<pre><code>      geneID      geneSym     location       strand        width 
+        TRUE        FALSE         TRUE         TRUE        FALSE 
+     biotype           GC     isoforms brOVzOV.tfbs       module 
+        TRUE        FALSE        FALSE        FALSE        FALSE 
+         kME        p.kME  kMEquantile     dZ.ASC_D    dZ.ASC_ND 
+       FALSE        FALSE        FALSE        FALSE        FALSE 
+     dZ.D_ND         desc 
+       FALSE        FALSE </code></pre>
+<pre class="r"><code># convert just these columns to characters
 genedf[, genedfFactorCols] = as.character(genedf[, genedfFactorCols])
+
+# re-check the genedf column classes
 sapply(genedf, class)</code></pre>
 <pre><code>      geneID      geneSym     location       strand        width 
  &quot;character&quot;  &quot;character&quot;  &quot;character&quot;  &quot;character&quot;    &quot;integer&quot; 
@@ -678,10 +724,6 @@ sapply(genedf, class)</code></pre>
 </div>
 <div id="is-the-gene-present-at-all-in-genedf-if-so-where" class="section level4">
 <h4>Is the gene present at all in <code>genedf</code>, if so, where?</h4>
-<p>There are other ways to access columns in a data frame, but I prefer <code>$</code> notation because it’s explicit.</p>
-<pre class="r"><code>genedf$geneSym[1:5]</code></pre>
-<pre><code>[1] &quot;LOC102290316&quot; &quot;LOC106633764&quot; &quot;LOC106633371&quot; &quot;LOC106632815&quot;
-[5] &quot;LOC102295297&quot;</code></pre>
 <p>Create a vector of logical/boolean values testing whether values in <code>genedf$geneSym</code> are equal to the value in <code>xgene</code>. Entry <em>i</em> corresponds to row <em>i</em> in <code>genedf</code>.</p>
 <pre class="r"><code>xgeneLogicalVec = genedf$geneSym == xgene
 xgeneLogicalVec[1:5]</code></pre>
