@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/09438de3f6253adb43a714fde026bf92206fcfdd" target="_blank">09438de</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/2974173414747e2649cbfdd44959f75f58442875" target="_blank">2974173</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -386,6 +386,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/2974173414747e2649cbfdd44959f75f58442875/analysis/explore_genedf.Rmd" target="_blank">2974173</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/b0c9def5ec6d9b1f82d52379ca2a01200912728a/docs/explore_genedf.html" target="_blank">b0c9def</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -883,7 +917,9 @@ subset(genedf, geneSym == xgene)</code></pre>
 androgenGeneRows = grep(&quot;androgen&quot;, genedf$desc, ignore.case=TRUE)
 androgenGeneRows</code></pre>
 <pre><code>[1]   322  3389 12272 12294</code></pre>
-<p>Subset <code>genedf</code> to just the rows with these genes.</p>
+</div>
+<div id="subset-genedf-to-just-the-rows-with-these-genes." class="section level4">
+<h4>Subset <code>genedf</code> to just the rows with these genes.</h4>
 <pre class="r"><code>genedf_androgenGenes = genedf[androgenGeneRows, ]
 genedf_androgenGenes</code></pre>
 <pre><code>         geneID      geneSym                    location strand width
@@ -907,27 +943,103 @@ genedf_androgenGenes</code></pre>
 12272     fibroblast growth factor 8 (androgen-induced)
 12294                                 androgen receptor</code></pre>
 <p>Get rid of columns we don’t care about here.</p>
-<pre class="r"><code>toRemove = c(&quot;geneID&quot;, &quot;location&quot;, &quot;strand&quot;, &quot;width&quot;, &quot;biotype&quot;, &quot;brOVzOV.tfbs&quot;)
+<pre class="r"><code># see ?match
+toRemove = c(&quot;geneID&quot;, &quot;location&quot;, &quot;strand&quot;, &quot;width&quot;, &quot;biotype&quot;, &quot;brOVzOV.tfbs&quot;, &quot;GC&quot;, &quot;isoforms&quot;)
 toRemove = match(toRemove, names(genedf_androgenGenes))
 toRemove</code></pre>
-<pre><code>[1] 1 3 4 5 6 9</code></pre>
+<pre><code>[1] 1 3 4 5 6 9 7 8</code></pre>
 <pre class="r"><code>genedf_androgenGenes = genedf_androgenGenes[, -toRemove]
 genedf_androgenGenes</code></pre>
-<pre><code>           geneSym       GC isoforms  module       kME        p.kME
-322   LOC102296288 0.382182        1 skyblue 0.6477241 2.712426e-03
-3389        pmepa1 0.392018        2  yellow 0.7850383 6.858058e-05
-12272         fgf8 0.410995        1     tan 0.6442378 2.909250e-03
-12294           ar 0.419903        2     tan 0.6221098 4.453170e-03
-      kMEquantile   dZ.ASC_D  dZ.ASC_ND    dZ.D_ND
-322     0.7073171  1.9925251 -0.6155870 -2.6313499
-3389    0.1979010  0.9734474  0.2051957 -0.7605058
-12272   0.6903226 -1.6198773  0.3590924  1.9925251
-12294   0.7612903 -0.4030680  2.5649459  3.0648382
+<pre><code>           geneSym  module       kME        p.kME kMEquantile   dZ.ASC_D
+322   LOC102296288 skyblue 0.6477241 2.712426e-03   0.7073171  1.9925251
+3389        pmepa1  yellow 0.7850383 6.858058e-05   0.1979010  0.9734474
+12272         fgf8     tan 0.6442378 2.909250e-03   0.6903226 -1.6198773
+12294           ar     tan 0.6221098 4.453170e-03   0.7612903 -0.4030680
+       dZ.ASC_ND    dZ.D_ND
+322   -0.6155870 -2.6313499
+3389   0.2051957 -0.7605058
+12272  0.3590924  1.9925251
+12294  2.5649459  3.0648382
                                                    desc
 322                              androgen receptor-like
 3389  prostate transmembrane protein androgen induced 1
 12272     fibroblast growth factor 8 (androgen-induced)
 12294                                 androgen receptor</code></pre>
+</div>
+<div id="sorting-genedf_androgengenes-based-on-the-values-in-some-columns" class="section level4">
+<h4>Sorting <code>genedf_androgenGenes</code> based on the values in some columns</h4>
+<p>Here we’ll order by kME</p>
+<pre class="r"><code># see ?order
+xorder = order(genedf_androgenGenes$kME)
+genedf_androgenGenes[xorder, ]</code></pre>
+<pre><code>           geneSym  module       kME        p.kME kMEquantile   dZ.ASC_D
+12294           ar     tan 0.6221098 4.453170e-03   0.7612903 -0.4030680
+12272         fgf8     tan 0.6442378 2.909250e-03   0.6903226 -1.6198773
+322   LOC102296288 skyblue 0.6477241 2.712426e-03   0.7073171  1.9925251
+3389        pmepa1  yellow 0.7850383 6.858058e-05   0.1979010  0.9734474
+       dZ.ASC_ND    dZ.D_ND
+12294  2.5649459  3.0648382
+12272  0.3590924  1.9925251
+322   -0.6155870 -2.6313499
+3389   0.2051957 -0.7605058
+                                                   desc
+12294                                 androgen receptor
+12272     fibroblast growth factor 8 (androgen-induced)
+322                              androgen receptor-like
+3389  prostate transmembrane protein androgen induced 1</code></pre>
+<p>Notice that <code>order</code> sorts numeric values in increasing order by default. But, we want to sort genes by kME in decreasing order. One way to do this is to set <code>decreasing = TRUE</code> in <code>order</code>, another is to just flip the values we give to <code>order</code> using a negative sign.</p>
+<pre class="r"><code>xorder = order(genedf_androgenGenes$kME, decreasing=TRUE)
+genedf_androgenGenes[xorder, ]</code></pre>
+<pre><code>           geneSym  module       kME        p.kME kMEquantile   dZ.ASC_D
+3389        pmepa1  yellow 0.7850383 6.858058e-05   0.1979010  0.9734474
+322   LOC102296288 skyblue 0.6477241 2.712426e-03   0.7073171  1.9925251
+12272         fgf8     tan 0.6442378 2.909250e-03   0.6903226 -1.6198773
+12294           ar     tan 0.6221098 4.453170e-03   0.7612903 -0.4030680
+       dZ.ASC_ND    dZ.D_ND
+3389   0.2051957 -0.7605058
+322   -0.6155870 -2.6313499
+12272  0.3590924  1.9925251
+12294  2.5649459  3.0648382
+                                                   desc
+3389  prostate transmembrane protein androgen induced 1
+322                              androgen receptor-like
+12272     fibroblast growth factor 8 (androgen-induced)
+12294                                 androgen receptor</code></pre>
+<pre class="r"><code>xorder = order(-genedf_androgenGenes$kME)
+genedf_androgenGenes[xorder, ]</code></pre>
+<pre><code>           geneSym  module       kME        p.kME kMEquantile   dZ.ASC_D
+3389        pmepa1  yellow 0.7850383 6.858058e-05   0.1979010  0.9734474
+322   LOC102296288 skyblue 0.6477241 2.712426e-03   0.7073171  1.9925251
+12272         fgf8     tan 0.6442378 2.909250e-03   0.6903226 -1.6198773
+12294           ar     tan 0.6221098 4.453170e-03   0.7612903 -0.4030680
+       dZ.ASC_ND    dZ.D_ND
+3389   0.2051957 -0.7605058
+322   -0.6155870 -2.6313499
+12272  0.3590924  1.9925251
+12294  2.5649459  3.0648382
+                                                   desc
+3389  prostate transmembrane protein androgen induced 1
+322                              androgen receptor-like
+12272     fibroblast growth factor 8 (androgen-induced)
+12294                                 androgen receptor</code></pre>
+<p>We can order by multiple columns at once.</p>
+<pre class="r"><code>xorder = order(genedf_androgenGenes$module, -genedf_androgenGenes$kME)
+genedf_androgenGenes[xorder, ]</code></pre>
+<pre><code>           geneSym  module       kME        p.kME kMEquantile   dZ.ASC_D
+322   LOC102296288 skyblue 0.6477241 2.712426e-03   0.7073171  1.9925251
+12272         fgf8     tan 0.6442378 2.909250e-03   0.6903226 -1.6198773
+12294           ar     tan 0.6221098 4.453170e-03   0.7612903 -0.4030680
+3389        pmepa1  yellow 0.7850383 6.858058e-05   0.1979010  0.9734474
+       dZ.ASC_ND    dZ.D_ND
+322   -0.6155870 -2.6313499
+12272  0.3590924  1.9925251
+12294  2.5649459  3.0648382
+3389   0.2051957 -0.7605058
+                                                   desc
+322                              androgen receptor-like
+12272     fibroblast growth factor 8 (androgen-induced)
+12294                                 androgen receptor
+3389  prostate transmembrane protein androgen induced 1</code></pre>
 </div>
 </div>
 </div>
