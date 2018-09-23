@@ -346,7 +346,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/f3bde49ae8421e1f6d20a8f3a1c2fcf44c4cb20d" target="_blank">f3bde49</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/AustinTHilliard/networks/tree/205b4525b1234fd5b44e7805c2e0aa286e2e01a4" target="_blank">205b452</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -386,6 +386,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/AustinTHilliard/networks/blob/205b4525b1234fd5b44e7805c2e0aa286e2e01a4/analysis/explore_genedf.Rmd" target="_blank">205b452</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+wflow_publish(all = T)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/AustinTHilliard/networks/0af4e1e4360d75ba57b1469d685759f300ec0608/docs/explore_genedf.html" target="_blank">0af4e1e</a>
+</td>
+<td style="text-align:left;">
+AustinTHilliard
+</td>
+<td style="text-align:left;">
+2018-09-23
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -1068,12 +1102,15 @@ genedf_androgenGenes[xorder, ]</code></pre>
 <h2>Subsetting to genes with specific properties</h2>
 <div id="get-genes-with-high-kme-in-a-specific-module" class="section level3">
 <h3>Get genes with high kME in a specific module</h3>
-<pre class="r"><code>xmod = &quot;tan&quot;
+<pre class="r"><code># Set the module of interest and kME threshold
+xmod = &quot;tan&quot;
 kMEthresh = 0.9
 
+# Get the rows that satisfy our conditions
 xmodRows = genedf$module == xmod
 kMEthreshRows = genedf$kME &gt;= kMEthresh
 
+# Subset genedf
 genedf_tan.9 = genedf[xmodRows &amp; kMEthreshRows, ]
 genedf_tan.9</code></pre>
 <pre><code>         geneID      geneSym                    location strand width
@@ -1119,7 +1156,7 @@ subset(genedf, (module == xmod) &amp; (kME &gt;= kMEthresh))</code></pre>
 12061 KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 3
 12062                                 phosphodiesterase 1B calmodulin-dependent</code></pre>
 <pre class="r"><code># Or we could&#39;ve indexed genedf directly 
-genedf[genedf$module == &quot;tan&quot; &amp; genedf$kME &gt;= 0.9, ]</code></pre>
+genedf[(genedf$module == &quot;tan&quot;) &amp; (genedf$kME &gt;= 0.9), ]</code></pre>
 <pre><code>         geneID      geneSym                    location strand width
 12059 102291507 LOC102291507 scaffold_30:2395688-2403058      -  7371
 12060 102291103 LOC102291103   scaffold_65:823088-830228      -  7141
@@ -1140,6 +1177,73 @@ genedf[genedf$module == &quot;tan&quot; &amp; genedf$kME &gt;= 0.9, ]</code></pr
 12060                                  poly(U)-specific endoribonuclease-C-like
 12061 KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 3
 12062                                 phosphodiesterase 1B calmodulin-dependent</code></pre>
+</div>
+<div id="get-genes-in-one-of-a-few-modules-that-have-high-kme-and-at-least-one-tfbs-hit" class="section level3">
+<h3>Get genes in one of a few modules that have high kME and at least one TFBS hit</h3>
+<pre class="r"><code>xmods = c(&quot;tan&quot;, &quot;skyblue&quot;, &quot;lightyellow&quot;, &quot;royalblue&quot;)
+kMEquantile = 0.2
+tfbsCol = &quot;brOVzOV.tfbs&quot;
+
+xmodRows = genedf$module %in% xmods
+kMEquantileRows = genedf$kMEquantile &lt;= kMEquantile
+tfbsHits = !is.na(genedf[, tfbsCol])
+
+genedf2 = genedf[xmodRows &amp; kMEquantileRows &amp; tfbsHits, ]
+genedf2</code></pre>
+<pre><code>         geneID      geneSym                     location strand width
+13    106633173 LOC106633173  scaffold_41:1797102-1803776      +  6675
+19    102293359        zfhx2     scaffold_475:54778-65354      + 10577
+39    102296846         ece1  scaffold_20:2010807-2035357      + 24551
+211   102311003     fam171a1   scaffold_228:882605-948739      + 66135
+230   102313672        cdk19 scaffold_125:1056190-1124481      + 68292
+236   102292848         mafk  scaffold_35:1016712-1027372      + 10661
+12073 102313247      col18a1  scaffold_72:1228551-1303411      - 74861
+12119 102310173 LOC102310173   scaffold_2:1676198-1680446      +  4249
+             biotype       GC isoforms
+13    protein_coding 0.382472        1
+19    protein_coding 0.443982        2
+39    protein_coding 0.400472        3
+211   protein_coding 0.325894        2
+230   protein_coding 0.326583        3
+236   protein_coding 0.399493        3
+12073 protein_coding 0.402867        6
+12119 protein_coding 0.415392        1
+                                                                     brOVzOV.tfbs
+13                                                                     Rxra(6.54)
+19                                                           GSX2,GSX2(10.6,8.48)
+39    Esrrg,ESRRB,Esrrb,Esrrb,Esrra,ESRRA,Rxra(14.2,14.1,13.7,13.7,12.5,12.1,7.5)
+211                                                                   HNF4A(11.7)
+230                                                                    GSX2(9.88)
+236    CREB1,Crem,Creb5,CREB1,Crem,Creb3l2,GSX2(13,10.9,10.4,10.4,10.3,9.35,9.25)
+12073                                                                  GSX2(8.76)
+12119                             Nr1h3::Rxra,GSX2,GSX2,GSX2(12.3,8.83,7.96,7.66)
+         module       kME        p.kME kMEquantile  dZ.ASC_D  dZ.ASC_ND
+13    royalblue 0.8804293 6.610185e-07  0.06310680  3.726478  1.3337719
+19    royalblue 0.8643688 1.822884e-06  0.09223301  3.939420  1.7441632
+39    royalblue 0.8118378 2.439074e-05  0.18932039  3.216939  0.7694838
+211     skyblue 0.8781974 7.674736e-07  0.03048780  2.030550 -0.8207827
+230     skyblue 0.8111302 2.511675e-05  0.14634146  3.003998  0.3590924
+236     skyblue 0.7988385 4.104359e-05  0.18292683  2.958367  0.4103913
+12073       tan 0.8672269 1.536554e-06  0.04838710 -1.924080  1.0259784
+12119       tan 0.8065257 3.031087e-05  0.19677419 -2.289122 -0.5129892
+        dZ.D_ND
+13    -2.342358
+19    -2.129416
+39    -2.418408
+211   -2.882317
+230   -2.631350
+236   -2.532484
+12073  2.988788
+12119  1.756768
+                                                                desc
+13                                      uncharacterized LOC106633173
+19                                            zinc finger homeobox 2
+39                                    endothelin converting enzyme 1
+211                    family with sequence similarity 171 member A1
+230                                       cyclin-dependent kinase 19
+236   v-maf avian musculoaponeurotic fibrosarcoma oncogene homolog K
+12073                                    collagen type XVIII alpha 1
+12119                        ribonuclease P protein subunit p25-like</code></pre>
 </div>
 </div>
 <div id="session-information" class="section level2">
