@@ -95,18 +95,50 @@ Here we will get all the genes with "androgen" in their name/description (`desc`
 androgenGeneRows = grep("androgen", genedf$desc, ignore.case=TRUE)
 androgenGeneRows
 ```
-Subset `genedf` to just the rows with these genes.
+#### Subset `genedf` to just the rows with these genes.
 ```{r}
 genedf_androgenGenes = genedf[androgenGeneRows, ]
 genedf_androgenGenes
 ```
 Get rid of columns we don't care about here.
 ```{r}
-toRemove = c("geneID", "location", "strand", "width", "biotype", "brOVzOV.tfbs")
+# see ?match
+toRemove = c("geneID", "location", "strand", "width", "biotype", "brOVzOV.tfbs", "GC", "isoforms")
 toRemove = match(toRemove, names(genedf_androgenGenes))
 toRemove
 genedf_androgenGenes = genedf_androgenGenes[, -toRemove]
 genedf_androgenGenes
+```
+#### Sorting `genedf_androgenGenes` based on the values in some columns
+Here we'll order by kME
+```{r}
+# see ?order
+xorder = order(genedf_androgenGenes$kME)
+genedf_androgenGenes[xorder, ]
+```
+Notice that `order` sorts numeric values in increasing order by default.
+But, we want to sort genes by kME in decreasing order. One way to do this is to set `decreasing = TRUE` in `order`, another is to just flip the values we give to `order` using a negative sign.
+```{r}
+xorder = order(genedf_androgenGenes$kME, decreasing=TRUE)
+genedf_androgenGenes[xorder, ]
+xorder = order(-genedf_androgenGenes$kME)
+genedf_androgenGenes[xorder, ]
+```
+We can order by multiple columns at once.
+```{r}
+xorder = order(genedf_androgenGenes$module, -genedf_androgenGenes$kME)
+genedf_androgenGenes[xorder, ]
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
 ```
 
 
