@@ -16,62 +16,42 @@ genedf = readRDS("data/genedf.rds")
 genedf[1:5,]
 ```
 
-## Brief aside about data object types and how to index them
-### Note that data frames (like `genedf`) are different from matrices in R, even though they both just look like 2-d arrays
-#### Data frames are usually nicer to work with but some functions require a matrix
-``` {r data frames and matrices 1}
-# You can check what class an object is with the class() function
-class(genedf)
-
-# You can change the class with as.matrix(), as.data.frame(), etc.
-genemat = as.matrix(genedf)
-class(genemat)
-class(as.data.frame(genemat))
-```
-R objects have both a class and storage mode. The difference between class and mode can be quite confusing. If you're interested [look here](https://stackoverflow.com/questions/35445112/what-is-the-difference-between-mode-and-class-in-r), but ...
-
-
-
-### The main differences between data frames and matrices are:
-#### 1) Matrices can only contain one type of data, e.g. numbers or characters/strings
-
-``` {r data frames and matrices 2}
-# For example, genedf is a data frame that contains different types of data
-
-```
-
-#### 2) Matrices can only be indexed with numeric coordinates 
-
-
 ## Subsetting to specific genes
 ### One gene of interest
 ```{r x}
-# set a specific gene name, this should be the official A. burtoni gene symbol
+# set a specific gene name, this should be the official _A. burtoni_ gene symbol
 xgene = "ar"
 
-# is it present at all?
-any(genedf$geneSym == xgene)
+# is it present at all in `genedf`?
+# `genedf$geneSym` accesses the column in `genedf` that has the name `geneSym`
+#   there are other ways to access columns in a data frame, but I prefer `$` notation because it's explicit
+head(genedf$geneSym)
+# `genedf$geneSym == xgene` creates a vector of logical/boolean values
+#   entry _i_ corresponds to row(_i_) in `genedf`
+head(genedf$geneSym == xgene)
 
-# Below are examples, we'll only look at first five rows
-# 1. Column number
-#    Note that this is the only way to access columns in a matrix
-#    
-genedf[1:5, 2]
+# create a vector testing whether entries in `genedf$geneSym` are the value stored in `xgene`,
+#   then check whether any entries are TRUE
+xgeneLogicalVec = genedf$geneSym == xgene
+xgenePres = any(xgeneLogicalVec)
+xgenePres
 
-# ---
-
-# get its row number
-
-xgeneRow = which(genedf$geneSym == xgene)
+# sometimes we may want the exact row number 
+xgeneRow = which(xgenePres)
 xgeneRow
-xgeneRow = which(genedf[, 2] == xgene)
-xgeneRow
 
-# these are equivalent
+# multiple ways of accessing the row in `genedf` for the gene name stored in `xgene`
+genedf[xgeneLogicalVec, ]
+genedf[xgeneRow, ]
+genedf[genedf$geneSym == xgene, ]
 subset(genedf, geneSym == xgene)
-genedf[xgeneRow, ]
-genedf[xgeneRow, ]
-
-
-
 ```
+
+
+
+
+
+
+
+
+
