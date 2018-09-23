@@ -12,6 +12,7 @@ rm(list=ls())
 options(stringsAsFactors=FALSE)
 genedf = readRDS("data/genedf.rds")
 ```
+### Inspect and prepare data
 In `genedf`, each row is a gene and each column is a different attribute.
 Let's look at its dimensions and the first few rows.
 ```{r}
@@ -36,8 +37,14 @@ genedfColClasses
 # create a vector that denotes which columns are factors
 genedfFactorCols = genedfColClasses == "factor"
 genedfFactorCols
-# convert just these columns to characters
-genedf[, genedfFactorCols] = as.character(genedf[, genedfFactorCols])
+# convert just these columns to characters using a simple for-loop
+factorColNums = which(genedfFactorCols)
+factorColNums
+for (factorCol in factorColNums) {
+  genedf[, factorCol] = as.character(genedf[, factorCol])
+}
+# always good practice to clean up variables used only during a loop
+rm(factorColNums, factorCol)
 
 # re-check the genedf column classes
 sapply(genedf, class)
@@ -48,7 +55,7 @@ sapply(genedf, class)
 ## Subsetting to specific genes
 ### One gene of interest
 #### Set a specific gene name
-This should be the . Here we will use the androgen receptor gene _ar_.
+This should be an official _A. burtoni_ gene symbol. Here we will use the androgen receptor gene _ar_.
 ```{r}
 xgene = "ar"
 ```
@@ -65,20 +72,19 @@ When a vector containing logical/boolean values is large we may want to test:
 # Note that the length of xgeneLogicalVec is the same as the number of rows in genedf
 length(xgeneLogicalVec)
 # Are any entries in xgeneLogicalVec TRUE?
-xgenePres = any(xgeneLogicalVec)
-xgenePres
+any(xgeneLogicalVec)
 # Which entries are TRUE?
 xgeneRow = which(xgeneLogicalVec)
 xgeneRow
 ```
-Here are multiple equivalent ways to access the row in `genedf` containing information for the gene name stored in `xgene`.
+#### Multiple equivalent ways to access the row in `genedf` containing information for the gene name stored in `xgene`.
 ```{r}
 # Use the logical vector 
 genedf[xgeneLogicalVec, ]
-genedf[genedf$geneSym == xgene, ]
 # Use the row number
 genedf[xgeneRow, ]
-# Use the subset() function, which effectively creates a logical vector equivalent to xgeneLogicalVec on the fly, then uses is to subset the data frame
+# Use the subset() function
+# It effectively creates a temporary vector like xgeneLogicalVec then subsets genedf
 subset(genedf, geneSym == xgene)
 ```
 
