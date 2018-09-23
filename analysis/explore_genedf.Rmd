@@ -13,36 +13,53 @@ options(stringsAsFactors=FALSE)
 genedf = readRDS("data/genedf.rds")
 ```
 In `genedf`, each row is a gene and each column is a different attribute.
-```{r}
-rownames(genedf)[1:5]
-names(genedf)[1:5]
-```
-Look at the dimensions of `genedf` and the first few rows.
+Let's look at its dimensions and the first few rows.
 ```{r}
 dim(genedf)
 genedf[1:5, ]
 ```
+Note that official _A. burtoni_ gene symbols are stored in the `geneSym` column.  
+We'll see that right now the values in this column are stored as `factors`, but we want them to be `character` strings instead.
+```{r}
+# The fact that the output tells us there are 12368 "levels" is a tip-off that the values in this column are stored as factors.
+genedf$geneSym[1:5]
+
+# Fix the column so that the values are characters
+genedf$geneSym = as.character(genedf$geneSym)
+genedf$geneSym[1:5]
+```
+In fact, let's check whether other columns of `genedf` store values as factors, and if so, convert them to characters.
+```{r}
+# create a vector holding the class of each genedf column
+genedfColClasses = sapply(genedf, class)
+genedfColClasses
+# create a vector that denotes which columns are factors
+genedfFactorCols = genedfColClasses == "factor"
+genedfFactorCols
+# convert just these columns to characters
+genedf[, genedfFactorCols] = as.character(genedf[, genedfFactorCols])
+
+# re-check the genedf column classes
+sapply(genedf, class)
+```
+
+
 
 ## Subsetting to specific genes
 ### One gene of interest
 #### Set a specific gene name
-This should be the official _A. burtoni_ gene symbol. Here we will use the androgen receptor gene _ar_.
+This should be the . Here we will use the androgen receptor gene _ar_.
 ```{r}
 xgene = "ar"
 ```
 #### Is the gene present at all in `genedf`, if so, where?
-`genedf$geneSym` accesses the column in `genedf` that has the name `geneSym`, which holds the official _A. burtoni_ gene symbols.
-There are other ways to access columns in a data frame, but I prefer `$` notation because it's explicit.
-```{r}
-genedf$geneSym[1:5]
-```
-`genedf$geneSym == xgene` creates a vector of logical/boolean values testing whether values in `genedf$geneSym` are equal to the value in `xgene`. Entry _i_ corresponds to row _i_ in `genedf`.
+Create a vector of logical/boolean values testing whether values in `genedf$geneSym` are equal to the value in `xgene`. Entry _i_ corresponds to row _i_ in `genedf`.
 ```{r}
 xgeneLogicalVec = genedf$geneSym == xgene
 xgeneLogicalVec[1:5]
 ```
-When a vector containing logical/boolean values is large we may want to test: 
-1. Whether any entries are `TRUE` 
+When a vector containing logical/boolean values is large we may want to test:  
+1. Whether any entries are `TRUE`  
 2. The exact locations of any entries that are `TRUE`
 ```{r}
 # Note that the length of xgeneLogicalVec is the same as the number of rows in genedf
@@ -54,7 +71,7 @@ xgenePres
 xgeneRow = which(xgeneLogicalVec)
 xgeneRow
 ```
-Here are multiple equivalent ways to access the row in `genedf` containing information for the gene whose name is stored in `xgene`.
+Here are multiple equivalent ways to access the row in `genedf` containing information for the gene name stored in `xgene`.
 ```{r}
 # Use the logical vector 
 genedf[xgeneLogicalVec, ]
@@ -74,9 +91,6 @@ subset(genedf, geneSym == xgene)
 
 
 
-```{r}
-
-```
 
 
 
