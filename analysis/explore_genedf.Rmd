@@ -50,8 +50,6 @@ rm(factorColNums, factorCol)
 sapply(genedf, class)
 ```
 
-
-
 ## Subsetting to specific genes
 ### One gene of interest
 #### Set a specific gene name
@@ -87,31 +85,28 @@ genedf[xgeneRow, ]
 # It effectively creates a temporary vector like xgeneLogicalVec then subsets genedf
 subset(genedf, geneSym == xgene)
 ```
+Note that we could have just used `subset(genedf, geneSym == "ar")` from the beginning!
 
-
-
-
-
-
-
-
-
-
-
-
-
+### Multiple genes of interest
+#### Define a vector of gene names
+Here we will get all the genes with "androgen" in their name/description (`desc` column)
 ```{r}
-
+# see ?grep
+androgenGeneRows = grep("androgen", genedf$desc, ignore.case=TRUE)
+androgenGeneRows
 ```
-
-
+Subset `genedf` to just the rows with these genes.
 ```{r}
-
+genedf_androgenGenes = genedf[androgenGeneRows, ]
+genedf_androgenGenes
 ```
-
-
+Get rid of columns we don't care about here.
 ```{r}
-
+toRemove = c("geneID", "location", "strand", "width", "biotype", "brOVzOV.tfbs")
+toRemove = match(toRemove, names(genedf_androgenGenes))
+toRemove
+genedf_androgenGenes = genedf_androgenGenes[, -toRemove]
+genedf_androgenGenes
 ```
 
 
