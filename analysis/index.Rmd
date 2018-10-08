@@ -6,6 +6,6 @@ output:
   workflowr::wflow_html:
     toc: false
 ---
-## [Organize essential data objects for a coexpression network](https://austinthilliard.github.io/networks/organize_coexpression_network.html)  
-## [Find the nearest neighbors of a gene in a topological overlap matrix](https://github.com/AustinTHilliard/networks/blob/master/code/NN_from_TOM.html)  
-## [Explore gene data frame](https://austinthilliard.github.io/networks/explore_genedf.html)  
+## -[Organize essential data objects for a coexpression network](https://austinthilliard.github.io/networks/organize_coexpression_network.html)  
+## -[Find the nearest neighbors of a gene in a topological overlap matrix](https://github.com/AustinTHilliard/networks/blob/master/code/NN_from_TOM.html)  
+## -[Explore gene data frame](https://austinthilliard.github.io/networks/explore_genedf.html)  
